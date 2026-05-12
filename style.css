@@ -1,0 +1,293 @@
+/* ==============================
+   FIT TALK — Stable UI
+============================== */
+
+html,
+body,
+.stApp {
+    background: #050505 !important;
+    color: #f2f2f2;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.block-container {
+    max-width: 1220px !important;
+    padding-top: 1.5rem !important;
+    padding-left: 2.2rem !important;
+    padding-right: 2.2rem !important;
+    padding-bottom: 7rem !important;
+}
+
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+div[data-testid="stToolbar"] {
+    display: none !important;
+}
+
+#MainMenu,
+footer {
+    visibility: hidden;
+}
+
+/* Sidebar */
+
+section[data-testid="stSidebar"] {
+    width: 280px !important;
+    background: #050505 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+section[data-testid="stSidebar"] > div {
+    padding-top: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+section[data-testid="stSidebar"] * {
+    color: #eeeeee !important;
+}
+
+section[data-testid="stSidebar"] label {
+    font-size: 0.68rem !important;
+    font-weight: 900 !important;
+    color: #bdbdbd !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+    background: #e8e8e4 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    color: #050505 !important;
+    min-height: 36px;
+}
+
+section[data-testid="stSidebar"] div[data-baseweb="select"] span {
+    color: #050505 !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button {
+    width: 100%;
+    min-height: 42px;
+    border-radius: 0 !important;
+    border: 1px solid #e8e8e4 !important;
+    background: #e8e8e4 !important;
+    color: #050505 !important;
+    font-size: 0.8rem !important;
+    font-weight: 900 !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: #050505 !important;
+    color: #e8e8e4 !important;
+}
+
+.sidebar-meta {
+    font-size: 0.68rem;
+    line-height: 1.7;
+    color: #a0a0a0 !important;
+}
+
+/* Try Prompt */
+
+.try-box {
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+    padding: 1rem 1.1rem;
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.try-title {
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    color: #bdbdbd;
+    margin-bottom: 0.5rem;
+}
+
+.try-text {
+    font-size: 0.86rem;
+    line-height: 1.7;
+    color: #f2f2f2;
+}
+
+/* Text readability */
+
+h6 {
+    color: #e8e8e4 !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.08em;
+    font-weight: 900 !important;
+}
+
+.stMarkdown {
+    color: #f2f2f2;
+}
+
+/* Chat messages */
+
+.user-message-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1.35rem 0;
+}
+
+.user-message {
+    width: fit-content;
+    max-width: min(620px, 78%);
+    background: #f4f1ea;
+    color: #050505;
+    border: 2px solid #f4f1ea;
+    padding: 0.9rem 1rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.12);
+}
+
+.ai-message-wrap {
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr);
+    gap: 1rem;
+    margin: 1.35rem 0 2rem 0;
+    align-items: stretch;
+}
+
+.ai-avatar-box {
+    background: #f4f1ea;
+    color: #050505;
+    min-height: 150px;
+    padding: 0.8rem;
+    text-align: center;
+    border: 2px solid #f4f1ea;
+}
+
+.mini-head {
+    width: 66px;
+    height: 78px;
+    margin: 0 auto 0.65rem auto;
+    position: relative;
+}
+
+.mini-hair {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 42px;
+    background: #050505;
+    border-radius: 34px 34px 14px 14px;
+}
+
+.mini-glasses {
+    position: absolute;
+    left: 8px;
+    top: 34px;
+    width: 50px;
+    height: 14px;
+    background: #050505;
+}
+
+.mini-mouth {
+    position: absolute;
+    left: 23px;
+    top: 60px;
+    width: 20px;
+    height: 6px;
+    border-bottom: 2px solid #050505;
+}
+
+.mini-name {
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.ai-message {
+    background: #f4f1ea;
+    color: #050505;
+    border: 2px solid #f4f1ea;
+    padding: 1rem 1.15rem;
+    min-height: 150px;
+    font-size: 0.92rem;
+    line-height: 1.8;
+    position: relative;
+    overflow-wrap: anywhere;
+}
+
+.ai-message::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 28px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 14px solid #f4f1ea;
+}
+
+.message-label {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    color: #4d4d4d;
+    margin-bottom: 0.6rem;
+}
+
+.message-label.dark {
+    background: #050505;
+    color: #f4f1ea;
+    padding: 0.25rem 0.45rem;
+}
+
+/* Chat input */
+
+div[data-testid="stChatInput"] {
+    background: transparent !important;
+}
+
+div[data-testid="stChatInput"] > div {
+    background: #e8e8e4 !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    border-radius: 0 !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    color: #050505 !important;
+    background: #e8e8e4 !important;
+    border-radius: 0 !important;
+    font-size: 0.9rem !important;
+}
+
+div[data-testid="stChatInput"] textarea::placeholder {
+    color: #777777 !important;
+}
+
+div[data-testid="stChatInput"] button {
+    background: #050505 !important;
+    color: #ffffff !important;
+    border-radius: 0 !important;
+}
+
+/* Streamlit */
+
+.stAlert {
+    border-radius: 0 !important;
+}
+
+div[data-testid="stAlert"] {
+    border-radius: 0 !important;
+}
+
+.stSpinner > div {
+    color: #f2f2f2 !important;
+}
+
+button {
+    border-radius: 0 !important;
+}
