@@ -1,5 +1,5 @@
 /* ==============================
-   FIT TALK — Stable UI
+   WEATHER FIT TALK — Stable UI
 ============================== */
 
 html,
@@ -115,48 +115,9 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     color: #f2f2f2;
 }
 
-/* Text readability */
+/* Avatar card */
 
-h6 {
-    color: #e8e8e4 !important;
-    font-size: 0.68rem !important;
-    letter-spacing: 0.08em;
-    font-weight: 900 !important;
-}
-
-.stMarkdown {
-    color: #f2f2f2;
-}
-
-/* Chat messages */
-
-.user-message-wrap {
-    display: flex;
-    justify-content: flex-end;
-    margin: 1.35rem 0;
-}
-
-.user-message {
-    width: fit-content;
-    max-width: min(620px, 78%);
-    background: #f4f1ea;
-    color: #050505;
-    border: 2px solid #f4f1ea;
-    padding: 0.9rem 1rem;
-    font-size: 0.92rem;
-    line-height: 1.7;
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.12);
-}
-
-.ai-message-wrap {
-    display: grid;
-    grid-template-columns: 118px minmax(0, 1fr);
-    gap: 1rem;
-    margin: 1.35rem 0 2rem 0;
-    align-items: stretch;
-}
-
-.ai-avatar-box {
+.weather-avatar-card {
     background: #f4f1ea;
     color: #050505;
     min-height: 150px;
@@ -165,40 +126,54 @@ h6 {
     border: 2px solid #f4f1ea;
 }
 
-.mini-head {
-    width: 66px;
+.weather-mini-icon {
+    width: 74px;
     height: 78px;
     margin: 0 auto 0.65rem auto;
     position: relative;
 }
 
-.mini-hair {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 64px;
-    height: 42px;
-    background: #050505;
-    border-radius: 34px 34px 14px 14px;
-}
-
-.mini-glasses {
+.mini-cloud {
     position: absolute;
     left: 8px;
-    top: 34px;
-    width: 50px;
-    height: 14px;
+    top: 20px;
+    width: 58px;
+    height: 28px;
     background: #050505;
+    border-radius: 30px;
 }
 
-.mini-mouth {
+.mini-cloud::before {
+    content: "";
     position: absolute;
-    left: 23px;
-    top: 60px;
-    width: 20px;
-    height: 6px;
-    border-bottom: 2px solid #050505;
+    left: 10px;
+    top: -16px;
+    width: 28px;
+    height: 28px;
+    background: #050505;
+    border-radius: 50%;
+}
+
+.mini-cloud::after {
+    content: "";
+    position: absolute;
+    right: 8px;
+    top: -10px;
+    width: 24px;
+    height: 24px;
+    background: #050505;
+    border-radius: 50%;
+}
+
+.mini-rain {
+    position: absolute;
+    left: 18px;
+    top: 58px;
+    width: 4px;
+    height: 18px;
+    background: #050505;
+    transform: rotate(18deg);
+    box-shadow: 22px 0 0 #050505, 44px 0 0 #050505;
 }
 
 .mini-name {
@@ -208,41 +183,31 @@ h6 {
     line-height: 1.2;
 }
 
-.ai-message {
-    background: #f4f1ea;
-    color: #050505;
-    border: 2px solid #f4f1ea;
-    padding: 1rem 1.15rem;
-    min-height: 150px;
-    font-size: 0.92rem;
-    line-height: 1.8;
-    position: relative;
-    overflow-wrap: anywhere;
-}
+/* Streamlit text */
 
-.ai-message::before {
-    content: "";
-    position: absolute;
-    left: -14px;
-    top: 28px;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-right: 14px solid #f4f1ea;
-}
-
-.message-label {
-    display: inline-block;
-    font-size: 0.62rem;
-    font-weight: 950;
+h6 {
+    color: #e8e8e4 !important;
+    font-size: 0.68rem !important;
     letter-spacing: 0.08em;
-    color: #4d4d4d;
-    margin-bottom: 0.6rem;
+    font-weight: 900 !important;
 }
 
-.message-label.dark {
-    background: #050505;
-    color: #f4f1ea;
-    padding: 0.25rem 0.45rem;
+/* info box */
+
+div[data-testid="stAlert"] {
+    border-radius: 0 !important;
+}
+
+/* markdown answer readability */
+
+.stMarkdown {
+    color: #f2f2f2;
+}
+
+.stMarkdown p,
+.stMarkdown li {
+    color: #f2f2f2;
+    line-height: 1.8;
 }
 
 /* Chat input */
@@ -280,14 +245,87 @@ div[data-testid="stChatInput"] button {
     border-radius: 0 !important;
 }
 
-div[data-testid="stAlert"] {
-    border-radius: 0 !important;
-}
-
 .stSpinner > div {
     color: #f2f2f2 !important;
 }
 
 button {
     border-radius: 0 !important;
+}
+
+/* ==============================
+   User Question Visibility Fix
+============================== */
+
+.user-question-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1.5rem 0;
+}
+
+.user-question-card {
+    width: fit-content;
+    max-width: 680px;
+    background: #f4f1ea;
+    color: #050505;
+    border: 2px solid #f4f1ea;
+    padding: 1rem 1.15rem;
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.14);
+}
+
+.user-question-label {
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    color: #555555;
+    margin-bottom: 0.55rem;
+}
+
+.user-question-text {
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.7;
+    color: #050505;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+/* ==============================
+   AI Answer Readability Fix
+============================== */
+
+.weather-answer-card {
+    background: #f4f1ea;
+    color: #050505;
+    border: 2px solid #f4f1ea;
+    padding: 1.15rem 1.25rem;
+    min-height: 150px;
+    line-height: 1.85;
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.12);
+}
+
+.weather-answer-label {
+    display: inline-block;
+    background: #050505;
+    color: #f4f1ea;
+    padding: 0.3rem 0.55rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+}
+
+.weather-answer-text {
+    color: #050505;
+    font-size: 0.96rem;
+    font-weight: 700;
+    line-height: 1.9;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+.weather-answer-text br {
+    display: block;
+    content: "";
+    margin-bottom: 0.35rem;
 }
