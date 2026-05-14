@@ -213,6 +213,46 @@ def build_context_summary(
     return "\n".join(lines)
 
 
+def search_duckduckgo(query: str, max_results: int = 5) -> str:
+    """DuckDuckGo 검색 결과를 LLM 프롬프트에 넣기 좋은 짧은 문자열로 정리합니다."""
+    if not query or not query.strip():
+        return "검색어가 비어 있어 DuckDuckGo 검색을 실행하지 않았습니다."
+
+    try:
+        from ddgs import DDGS
+    except ImportError:
+        return "ddgs 패키지가 설치되어 있지 않습니다. requirements.txt 설치 후 검색을 사용할 수 있습니다."
+
+    try:
+        results = []
+        with DDGS() as ddgs:
+            for item in ddgs.text(query.strip(), max_results=max_results):
+                title = str(item.get("title", "")).strip()
+                body = str(item.get("body", "")).strip()
+                href = str(item.get("href", "")).strip()
+
+                if not title and not body:
+                    continue
+
+                results.append(
+                    "\n".join(
+                        [
+                            f"- 제목: {title[:120]}",
+                            f"  요약: {body[:240]}",
+                            f"  링크: {href[:200]}",
+                        ]
+                    )
+                )
+
+        if not results:
+            return "검색 결과를 찾지 못했습니다."
+
+        return "\n".join(results)
+
+    except Exception as error:
+        return f"검색 중 오류가 발생했습니다: {error}"
+
+
 def get_weather_warning(weather_condition: str, temperature_range: str, wind_level: str) -> str:
     """오늘 조건에서 피하면 좋은 옷차림 힌트를 만듭니다."""
     warnings = []

@@ -31,6 +31,18 @@ STYLE_PRIORITY_LAYER = """
 - 스타일 추천은 날씨 대응과 스타일 다양성을 함께 반영한다.
 """
 
+WEB_SEARCH_LAYER = """
+DuckDuckGo 검색 참고 정보:
+{web_search_result}
+
+웹 검색 사용 규칙:
+- 웹 검색 결과는 참고용으로만 사용한다.
+- 검색 결과와 사용자 입력이 다르면 사용자 입력과 최종 보정 조건을 우선한다.
+- 검색 결과 문장을 그대로 길게 복사하지 말고 옷차림 추천에 필요한 부분만 반영한다.
+- 검색 결과가 없거나 오류가 있으면 기존 사용자 조건만으로 답변한다.
+- 링크 목록을 답변에 그대로 나열하지 않는다.
+"""
+
 RULE_LAYER = """
 답변 규칙:
 - 첫 줄부터 결론을 먼저 말해.
@@ -126,6 +138,7 @@ def build_weather_fit_prompt(
     weather_keywords: str,
     style_keywords: str,
     warning_keywords: str,
+    web_search_result: str = "웹 검색을 사용하지 않았습니다.",
 ) -> str:
     """프롬프트 layer와 tool 결과를 합쳐 Ollama에 전달할 최종 프롬프트를 만듭니다."""
     context_layer = f"""
@@ -158,6 +171,8 @@ CONTEXT_LAYER
         USER_INPUT_PRIORITY_LAYER.strip(),
         "STYLE_PRIORITY_LAYER",
         STYLE_PRIORITY_LAYER.strip(),
+        "WEB_SEARCH_LAYER",
+        WEB_SEARCH_LAYER.format(web_search_result=web_search_result).strip(),
         "RULE_LAYER",
         RULE_LAYER.strip(),
         context_layer.strip(),

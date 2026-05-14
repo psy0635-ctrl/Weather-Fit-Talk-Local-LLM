@@ -15,6 +15,7 @@ from tools import (
     infer_style_from_user_input,
     infer_weather_from_user_input,
     merge_user_weather_with_sidebar,
+    search_duckduckgo,
 )
 
 
@@ -485,6 +486,11 @@ model_name = st.sidebar.selectbox(
     ["gemma3:4b", "gemma3:1b"],
 )
 
+use_web_search = st.sidebar.checkbox(
+    "DuckDuckGo 검색 사용",
+    value=False,
+)
+
 location = st.sidebar.text_input("지역", value="서울")
 
 weather_condition = st.sidebar.selectbox(
@@ -612,6 +618,17 @@ if user_input:
     )
     warning_keywords = get_weather_warning(final_weather_condition, final_temperature_range, final_wind_level)
 
+    if use_web_search:
+        search_query = (
+            f"{location} 오늘 날씨 옷차림 "
+            f"{final_weather_condition} {final_temperature_range} {cleaned_user_input}"
+        )
+        web_search_result = search_duckduckgo(search_query, max_results=3)
+        with st.expander("DuckDuckGo 검색 참고 정보 보기"):
+            st.write(web_search_result)
+    else:
+        web_search_result = "웹 검색을 사용하지 않았습니다."
+
     prompt = build_weather_fit_prompt(
         user_input=cleaned_user_input,
         conversation_history=conversation_history,
@@ -619,6 +636,7 @@ if user_input:
         weather_keywords=weather_keywords,
         style_keywords=style_keywords,
         warning_keywords=warning_keywords,
+        web_search_result=web_search_result,
     )
 
     with st.spinner("WEATHER STYLIST가 오늘의 날씨와 코디를 분석하는 중입니다..."):
