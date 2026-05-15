@@ -94,7 +94,7 @@ def clean_text(text: str) -> str:
     return "\n".join(cleaned_lines).strip()
 
 
-def ask_ollama(prompt: str, model: str = "gemma3:4b") -> str:
+def ask_ollama(prompt: str, model: str = "gemma4:e4b") -> str:
     """Ollama 로컬 LLM에 프롬프트를 보내고 답변을 반환합니다."""
     response = requests.post(
         "http://localhost:11434/api/generate",
@@ -483,7 +483,7 @@ st.sidebar.markdown("---")
 
 model_name = st.sidebar.selectbox(
     "Local LLM Model",
-    ["gemma3:4b", "gemma3:1b"],
+    ["gemma4:e4b", "gemma3:4b", "gemma3:1b"],
 )
 
 use_web_search = st.sidebar.checkbox(
@@ -534,7 +534,7 @@ st.sidebar.markdown(
     """
     <div class="sidebar-meta">
         <b>Project</b>: Weather Fit Talk<br>
-        <b>Local LLM</b>: Ollama + gemma3:4b<br>
+        <b>Local LLM</b>: Ollama + gemma4:e4b<br>
         <b>API Key</b>: 사용하지 않음<br>
         <b>Cost</b>: API 비용 없음<br>
         <b>Topic</b>: 날씨 기반 코디 추천
@@ -643,7 +643,7 @@ if user_input:
         try:
             ai_answer = ask_ollama(prompt, model_name)
         except requests.exceptions.ConnectionError:
-            ai_answer = "Ollama가 실행 중이 아닙니다. PowerShell에서 ollama run gemma3:4b 명령어를 실행한 뒤 다시 시도해주세요."
+            ai_answer = "Ollama가 실행 중이 아닙니다. PowerShell에서 ollama run gemma4:e4b 명령어를 실행한 뒤 다시 시도해주세요."
             st.error("Ollama 연결 실패")
         except requests.exceptions.Timeout:
             ai_answer = "답변 시간이 너무 오래 걸렸습니다. 질문을 조금 짧게 입력하거나 다시 시도해주세요."
