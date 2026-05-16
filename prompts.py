@@ -138,7 +138,7 @@ def build_weather_fit_prompt(
     weather_keywords: str,
     style_keywords: str,
     warning_keywords: str,
-    web_search_result: str = "웹 검색을 사용하지 않았습니다.",
+    web_search_result: str = "DuckDuckGo 검색을 사용하지 않았습니다.",
 ) -> str:
     """프롬프트 layer와 tool 결과를 합쳐 Ollama에 전달할 최종 프롬프트를 만듭니다."""
     context_layer = f"""

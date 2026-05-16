@@ -3,7 +3,6 @@ import re
 
 import requests
 import streamlit as st
-import streamlit.components.v1 as components
 
 from prompts import build_weather_fit_prompt
 from tools import (
@@ -21,12 +20,16 @@ from tools import (
 
 st.set_page_config(
     page_title="WEATHER FIT TALK",
-    page_icon="☁️",
+    page_icon="🌦️",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 
 CHAT_STATE_KEY = "weather_fit_clean_messages_v4"
+DEFAULT_LLM_MODEL = "gemma4:e4b"
+BACKUP_LLM_MODELS = ["gemma3:4b", "gemma3:1b"]
+LLM_MODEL_OPTIONS = [DEFAULT_LLM_MODEL, *BACKUP_LLM_MODELS]
 
 
 def load_css(file_name: str) -> None:
@@ -94,7 +97,7 @@ def clean_text(text: str) -> str:
     return "\n".join(cleaned_lines).strip()
 
 
-def ask_ollama(prompt: str, model: str = "gemma4:e4b") -> str:
+def ask_ollama(prompt: str, model: str = DEFAULT_LLM_MODEL) -> str:
     """Ollama 로컬 LLM에 프롬프트를 보내고 답변을 반환합니다."""
     response = requests.post(
         "http://localhost:11434/api/generate",
@@ -117,8 +120,23 @@ def render_hero(
     wind_level: str,
     situation: str,
     style: str,
+    use_web_search: bool,
 ) -> None:
     """상단 히어로 영역과 현재 설정 요약을 출력합니다."""
+    weather_accent_map = {
+        "맑음": ("#f2c94c", "SUNNY"),
+        "비": ("#5aa9e6", "RAIN"),
+        "눈": ("#9adcf7", "SNOW"),
+        "흐림": ("#a8adb7", "CLOUDY"),
+        "안개": ("#c8c8bd", "FOG"),
+        "미세먼지": ("#c9b18a", "DUST"),
+        "폭염": ("#ff8a3d", "HEAT"),
+        "추위": ("#82d8d8", "COLD"),
+        "일교차 큼": ("#d6c27a", "TEMP SHIFT"),
+    }
+    weather_accent, weather_badge = weather_accent_map.get(weather_condition, ("#d6c27a", "WEATHER"))
+    web_search_status = "ON" if use_web_search else "OFF"
+
     hero_html = f"""
     <!DOCTYPE html>
     <html>
@@ -134,32 +152,36 @@ def render_hero(
         }}
         .canvas {{
             width: 100%;
-            min-height: 720px;
-            background: #e8e8e4;
-            color: #050505;
-            padding: 34px 38px;
+            min-height: auto;
+            background:
+                linear-gradient(120deg, rgba(255,255,255,0.05), transparent 36%),
+                radial-gradient(circle at 78% 12%, {weather_accent}33, transparent 28%),
+                #050505;
+            color: #f4f1ea;
+            padding: 30px 34px 28px;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
+            border: 1px solid rgba(244,241,234,0.16);
         }}
         .canvas::before {{
             content: "";
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
-            background-size: 22px 22px;
-            opacity: 0.5;
+                linear-gradient(rgba(244,241,234,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244,241,234,0.045) 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.7;
             pointer-events: none;
         }}
         .inner {{ position: relative; z-index: 2; }}
         .nav {{
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
-            border-bottom: 1px solid rgba(0,0,0,0.25);
-            padding-bottom: 14px;
-            margin-bottom: 58px;
+            border-bottom: 1px solid rgba(244,241,234,0.2);
+            padding-bottom: 12px;
+            margin-bottom: 30px;
         }}
         .brand {{
             display: flex;
@@ -167,12 +189,12 @@ def render_hero(
             gap: 12px;
             font-size: 22px;
             font-weight: 900;
-            letter-spacing: 0.04em;
+            letter-spacing: 0;
         }}
         .brand-symbol {{
             width: 30px;
             height: 30px;
-            border: 2px solid #050505;
+            border: 2px solid #f4f1ea;
             border-radius: 50%;
             position: relative;
         }}
@@ -182,159 +204,269 @@ def render_hero(
             position: absolute;
             width: 9px;
             height: 2px;
-            background: #050505;
+            background: #f4f1ea;
             top: 12px;
         }}
         .brand-symbol::before {{ left: -10px; }}
         .brand-symbol::after {{ right: -10px; }}
-        .menu {{
-            display: flex;
-            gap: 28px;
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 0.08em;
-        }}
-        .menu span {{ border-bottom: 1px solid transparent; padding-bottom: 4px; }}
-        .menu .active {{ border-bottom: 1px solid #050505; }}
         .hero {{
             display: grid;
-            grid-template-columns: 1.25fr 0.75fr;
-            gap: 36px;
-            align-items: end;
+            grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.68fr);
+            gap: 28px;
+            align-items: stretch;
+        }}
+        .hero-left {{
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }}
         .kicker {{
             font-size: 12px;
             font-weight: 900;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
             margin-bottom: 18px;
+            color: {weather_accent};
         }}
         .title {{
-            font-size: 128px;
-            line-height: 0.78;
+            font-size: 70px;
+            line-height: 0.92;
             font-weight: 950;
-            letter-spacing: -0.08em;
+            letter-spacing: 0;
+            max-width: 740px;
         }}
-        .black-block {{
+        .title-mark {{
             display: inline-block;
-            width: 190px;
-            height: 76px;
-            background: #050505;
-            margin-right: 20px;
-            vertical-align: middle;
+            color: {weather_accent};
         }}
         .desc {{
-            margin-top: 28px;
+            margin-top: 22px;
             padding-top: 14px;
-            border-top: 1px solid rgba(0,0,0,0.25);
-            font-size: 14px;
+            border-top: 1px solid rgba(244,241,234,0.2);
+            font-size: 16px;
             line-height: 1.7;
+            max-width: 640px;
+            color: rgba(244,241,234,0.88);
+        }}
+        .concept-row {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }}
+        .concept-pill {{
+            border: 1px solid rgba(244,241,234,0.18);
+            background: rgba(244,241,234,0.08);
+            color: #f4f1ea;
+            padding: 9px 12px;
+            font-size: 12px;
+            font-weight: 900;
+            border-radius: 999px;
+        }}
+        .start-note {{
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            width: fit-content;
+            margin-top: 20px;
+            padding: 13px 16px;
+            background: {weather_accent};
+            color: #050505;
+            font-size: 13px;
+            font-weight: 950;
+            border-radius: 8px;
+        }}
+        .start-note span {{
+            width: 28px;
+            height: 1px;
+            background: #050505;
+            display: inline-block;
+        }}
+        .right-stack {{
+            display: grid;
+            gap: 16px;
         }}
         .character-card {{
-            width: 330px;
-            min-height: 445px;
-            background: #050505;
-            color: #e8e8e4;
-            padding: 22px;
+            width: 100%;
+            min-height: 248px;
+            background: #f4f1ea;
+            color: #050505;
+            padding: 18px;
             margin-left: auto;
+            border: 1px solid rgba(244,241,234,0.32);
+            border-radius: 8px;
+            box-shadow: 0 28px 60px rgba(0,0,0,0.34);
         }}
         .character-label {{
             font-size: 12px;
             font-weight: 900;
-            letter-spacing: 0.1em;
-            color: #bdbdbd;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            letter-spacing: 0.08em;
+            color: #685f4b;
+            border-bottom: 1px solid rgba(5,5,5,0.16);
             padding-bottom: 12px;
-            margin-bottom: 26px;
+            margin-bottom: 16px;
         }}
         .weather-icon {{
-            width: 150px;
-            height: 150px;
-            margin: 18px auto 28px auto;
+            width: 116px;
+            height: 92px;
+            margin: 2px auto 12px auto;
             position: relative;
+        }}
+        .sun {{
+            position: absolute;
+            right: 8px;
+            top: 4px;
+            width: 34px;
+            height: 34px;
+            background: {weather_accent};
+            border-radius: 50%;
+            box-shadow: 0 0 0 11px {weather_accent}33;
         }}
         .cloud {{
             position: absolute;
-            left: 20px;
-            top: 40px;
-            width: 112px;
-            height: 58px;
-            background: #e8e8e4;
+            left: 14px;
+            top: 34px;
+            width: 86px;
+            height: 42px;
+            background: #050505;
             border-radius: 40px;
         }}
         .cloud::before {{
             content: "";
             position: absolute;
-            left: 20px;
-            top: -28px;
-            width: 58px;
-            height: 58px;
-            background: #e8e8e4;
+            left: 17px;
+            top: -24px;
+            width: 44px;
+            height: 44px;
+            background: #050505;
             border-radius: 50%;
         }}
         .cloud::after {{
             content: "";
             position: absolute;
-            right: 16px;
-            top: -18px;
-            width: 48px;
-            height: 48px;
-            background: #e8e8e4;
+            right: 13px;
+            top: -15px;
+            width: 36px;
+            height: 36px;
+            background: #050505;
             border-radius: 50%;
         }}
         .rain {{
             position: absolute;
-            left: 38px;
-            top: 112px;
-            width: 6px;
-            height: 32px;
-            background: #e8e8e4;
+            left: 30px;
+            top: 82px;
+            width: 5px;
+            height: 24px;
+            background: {weather_accent};
             transform: rotate(18deg);
-            box-shadow: 38px 0 0 #e8e8e4, 76px 0 0 #e8e8e4;
+            box-shadow: 30px 0 0 {weather_accent}, 60px 0 0 {weather_accent};
         }}
         .character-name {{
-            font-size: 25px;
+            font-size: 24px;
             font-weight: 950;
-            letter-spacing: -0.03em;
+            letter-spacing: 0;
             margin-top: 18px;
         }}
         .character-desc {{
             margin-top: 8px;
             font-size: 13px;
-            color: #c8c8c8;
+            color: #37322b;
             line-height: 1.6;
         }}
+        .option-card {{
+            background: rgba(244,241,234,0.1);
+            border: 1px solid rgba(244,241,234,0.18);
+            border-radius: 8px;
+            padding: 18px;
+            color: #f4f1ea;
+        }}
+        .option-heading {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }}
+        .option-title {{
+            font-size: 13px;
+            font-weight: 950;
+            letter-spacing: 0.08em;
+        }}
+        .weather-badge {{
+            border: 1px solid {weather_accent};
+            color: {weather_accent};
+            border-radius: 999px;
+            padding: 5px 9px;
+            font-size: 11px;
+            font-weight: 950;
+        }}
+        .option-list {{ display: grid; gap: 8px; }}
+        .option-list div {{
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            border-bottom: 1px solid rgba(244,241,234,0.16);
+            padding-bottom: 7px;
+            font-size: 13px;
+        }}
+        .option-list span {{ color: rgba(244,241,234,0.6); }}
+        .option-list b {{ color: #f4f1ea; text-align: right; }}
         .info-grid {{
             display: grid;
-            grid-template-columns: 1.35fr 0.85fr;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 0.6fr);
             gap: 18px;
-            margin-top: 34px;
+            margin-top: 20px;
         }}
         .info-card {{
-            background: rgba(255,255,255,0.36);
-            border: 1px solid rgba(0,0,0,0.2);
+            background: rgba(244,241,234,0.08);
+            border: 1px solid rgba(244,241,234,0.16);
+            border-radius: 8px;
             padding: 18px;
+            color: #f4f1ea;
         }}
         .info-title {{
             font-size: 13px;
             font-weight: 950;
             letter-spacing: 0.06em;
             margin-bottom: 12px;
+            color: {weather_accent};
         }}
         .info-text {{
             font-size: 13px;
             line-height: 1.8;
-            color: #252525;
+            color: rgba(244,241,234,0.82);
         }}
-        .option-list {{ display: grid; gap: 8px; }}
-        .option-list div {{
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(0,0,0,0.18);
-            padding-bottom: 6px;
+        .mini-metric {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }}
+        .mini-metric div {{
+            background: rgba(244,241,234,0.08);
+            border: 1px solid rgba(244,241,234,0.14);
+            border-radius: 8px;
+            padding: 12px;
+        }}
+        .mini-metric span {{
+            display: block;
+            color: rgba(244,241,234,0.58);
+            font-size: 11px;
+            font-weight: 900;
+            margin-bottom: 7px;
+        }}
+        .mini-metric b {{
+            display: block;
+            color: #f4f1ea;
             font-size: 13px;
+            line-height: 1.35;
         }}
-        .option-list span {{ color: #555; }}
-        .option-list b {{ color: #050505; }}
+        @media (max-width: 900px) {{
+            .canvas {{ min-height: auto; padding: 26px 22px; }}
+            .hero, .info-grid {{ grid-template-columns: 1fr; }}
+            .hero-left {{ min-height: auto; }}
+            .title {{ font-size: 54px; }}
+            .right-stack {{ margin-top: 24px; }}
+        }}
     </style>
     </head>
     <body>
@@ -343,35 +475,53 @@ def render_hero(
                 <div class="nav">
                     <div class="brand">
                         <div class="brand-symbol"></div>
-                        <div>WEATHER FIT</div>
-                    </div>
-                    <div class="menu">
-                        <span class="active">HOME</span>
-                        <span>WEATHER</span>
-                        <span>STYLING</span>
-                        <span>LOCAL LLM</span>
-                        <span>ARCHIVE</span>
+                        <div>WEATHER FIT TALK</div>
                     </div>
                 </div>
                 <div class="hero">
-                    <div>
-                        <div class="kicker">LOCAL LLM × WEATHER STYLING × NO API KEY</div>
-                        <div class="title"><span class="black-block"></span>WEATHER<br>FIT</div>
-                        <div class="desc">
-                            날씨, 기온, 바람, 상황을 바탕으로<br>
-                            오늘 입기 좋은 옷차림을 추천하는 AI 챗봇
+                    <div class="hero-left">
+                        <div>
+                            <div class="kicker">WEATHER SERVICE × FASHION EDITORIAL × LOCAL LLM</div>
+                            <div class="title">WEATHER<br><span class="title-mark">FIT</span> TALK</div>
+                            <div class="desc">
+                                날씨, 기온, 바람, 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 AI 스타일리스트
+                            </div>
+                            <div class="concept-row">
+                                <div class="concept-pill">TODAY: {html.escape(weather_condition)}</div>
+                                <div class="concept-pill">STYLE: {html.escape(style)}</div>
+                                <div class="concept-pill">LOCAL MODEL: GEMMA4:E4B</div>
+                            </div>
+                            <div class="start-note"><span></span>ASK THE WEATHER STYLIST BELOW</div>
                         </div>
                     </div>
-                    <div class="character-card">
-                        <div class="character-label">AI WEATHER STYLIST</div>
-                        <div class="weather-icon">
-                            <div class="cloud"></div>
-                            <div class="rain"></div>
+                    <div class="right-stack">
+                        <div class="character-card">
+                            <div class="character-label">AI WEATHER STYLIST</div>
+                            <div class="weather-icon">
+                                <div class="sun"></div>
+                                <div class="cloud"></div>
+                                <div class="rain"></div>
+                            </div>
+                            <div class="character-name">WEATHER STYLIST</div>
+                            <div class="character-desc">
+                                패션 에디터처럼 무드를 잡고, 날씨 비서처럼 현실적인 착용감을 챙깁니다.
+                            </div>
                         </div>
-                        <div class="character-name">WEATHER STYLIST</div>
-                        <div class="character-desc">
-                            오늘의 날씨와 상황을 읽고<br>
-                            가장 현실적인 코디를 추천합니다.
+                        <div class="option-card">
+                            <div class="option-heading">
+                                <div class="option-title">TODAY WEATHER OPTION</div>
+                                <div class="weather-badge">{html.escape(weather_badge)}</div>
+                            </div>
+                            <div class="option-list">
+                                <div><span>지역</span><b>{html.escape(location)}</b></div>
+                                <div><span>날씨</span><b>{html.escape(weather_condition)}</b></div>
+                                <div><span>기온</span><b>{html.escape(temperature_range)}</b></div>
+                                <div><span>바람</span><b>{html.escape(wind_level)}</b></div>
+                                <div><span>상황</span><b>{html.escape(situation)}</b></div>
+                                <div><span>스타일</span><b>{html.escape(style)}</b></div>
+                                <div><span>웹 검색</span><b>{html.escape(web_search_status)}</b></div>
+                                <div><span>검색 엔진</span><b>DuckDuckGo</b></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -379,20 +529,15 @@ def render_hero(
                     <div class="info-card">
                         <div class="info-title">WHAT IS WEATHER FIT?</div>
                         <div class="info-text">
-                            WEATHER FIT은 사용자가 선택한 날씨, 기온, 바람, 상황을 바탕으로
-                            상의, 하의, 아우터, 신발, 소품을 추천하는 날씨 기반 AI 코디 챗봇입니다.
-                            OpenAI나 Gemini API 없이 Ollama 로컬 LLM으로 답변을 생성합니다.
+                            WEATHER FIT TALK는 날씨와 사용자의 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 로컬 LLM 기반 AI 챗봇입니다.
                         </div>
                     </div>
                     <div class="info-card">
-                        <div class="info-title">CURRENT WEATHER OPTION</div>
-                        <div class="option-list">
-                            <div><span>Location</span><b>{html.escape(location)}</b></div>
-                            <div><span>Weather</span><b>{html.escape(weather_condition)}</b></div>
-                            <div><span>Temp</span><b>{html.escape(temperature_range)}</b></div>
-                            <div><span>Wind</span><b>{html.escape(wind_level)}</b></div>
-                            <div><span>Situation</span><b>{html.escape(situation)}</b></div>
-                            <div><span>Style</span><b>{html.escape(style)}</b></div>
+                        <div class="info-title">TODAY FIT SIGNAL</div>
+                        <div class="mini-metric">
+                            <div><span>MOOD</span><b>{html.escape(style)}</b></div>
+                            <div><span>WEATHER</span><b>{html.escape(weather_condition)}</b></div>
+                            <div><span>SCENE</span><b>{html.escape(situation)}</b></div>
                         </div>
                     </div>
                 </div>
@@ -401,7 +546,7 @@ def render_hero(
     </body>
     </html>
     """
-    components.html(hero_html, height=760, scrolling=False)
+    st.markdown(hero_html, unsafe_allow_html=True)
 
 
 def render_user_message(content: str) -> None:
@@ -423,6 +568,7 @@ def render_user_message(content: str) -> None:
 def render_ai_message(content: str) -> None:
     """AI 답변을 아바타와 함께 출력합니다."""
     cleaned = clean_text(content)
+    safe_answer = html.escape(cleaned).replace("\n\n", "<br><br>").replace("\n", "<br>")
     avatar_col, answer_col = st.columns([0.16, 0.84])
 
     with avatar_col:
@@ -440,8 +586,15 @@ def render_ai_message(content: str) -> None:
         )
 
     with answer_col:
-        st.markdown("###### WEATHER STYLIST TALKING")
-        st.markdown(cleaned)
+        st.markdown(
+            f"""
+            <div class="weather-answer-card">
+                <div class="weather-answer-label">WEATHER STYLIST TALKING</div>
+                <div class="weather-answer-text">{safe_answer}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 
 def render_try_prompt() -> None:
@@ -471,7 +624,7 @@ def build_conversation_history(messages: list[dict[str, str]]) -> str:
 load_css("style.css")
 
 
-st.sidebar.markdown("## ☁️ WEATHER FIT SETTINGS")
+st.sidebar.markdown("## 🌦️ WEATHER FIT SETTINGS")
 st.sidebar.caption("날씨와 상황에 맞는 코디 조건을 선택하세요.")
 
 if st.sidebar.button("대화 초기화", use_container_width=True):
@@ -483,12 +636,21 @@ st.sidebar.markdown("---")
 
 model_name = st.sidebar.selectbox(
     "Local LLM Model",
-    ["gemma4:e4b", "gemma3:4b", "gemma3:1b"],
+    LLM_MODEL_OPTIONS,
 )
+
+st.sidebar.markdown("### 🌐 WEB SEARCH")
 
 use_web_search = st.sidebar.checkbox(
     "DuckDuckGo 검색 사용",
     value=False,
+    help="체크하면 사용자 질문과 날씨 조건을 바탕으로 DuckDuckGo 검색 결과를 참고합니다.",
+)
+
+search_result_count = st.sidebar.selectbox(
+    "검색 결과 개수",
+    [3, 5, 7],
+    index=0,
 )
 
 location = st.sidebar.text_input("지역", value="서울")
@@ -531,10 +693,10 @@ color_preference = st.sidebar.selectbox(
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
-    """
+    f"""
     <div class="sidebar-meta">
         <b>Project</b>: Weather Fit Talk<br>
-        <b>Local LLM</b>: Ollama + gemma4:e4b<br>
+        <b>Local LLM</b>: Ollama + {DEFAULT_LLM_MODEL}<br>
         <b>API Key</b>: 사용하지 않음<br>
         <b>Cost</b>: API 비용 없음<br>
         <b>Topic</b>: 날씨 기반 코디 추천
@@ -549,6 +711,8 @@ display_temperature_range = display_options.get("temperature_range", temperature
 display_wind_level = display_options.get("wind_level", wind_level)
 display_style = display_options.get("style", style)
 
+web_search_result = "아직 검색을 실행하지 않았습니다."
+
 render_hero(
     location=location,
     weather_condition=display_weather_condition,
@@ -556,6 +720,7 @@ render_hero(
     wind_level=display_wind_level,
     situation=situation,
     style=display_style,
+    use_web_search=use_web_search,
 )
 
 if CHAT_STATE_KEY not in st.session_state:
@@ -570,7 +735,14 @@ for message in st.session_state[CHAT_STATE_KEY]:
     else:
         render_ai_message(message["content"])
 
-user_input = st.chat_input("오늘 날씨와 상황을 입력해보세요. 예: 비 오는데 등교 갈 때 뭐 입을까?")
+last_web_search_result = st.session_state.get("last_web_search_result")
+if use_web_search and last_web_search_result:
+    with st.expander("DuckDuckGo 검색 참고 정보 보기"):
+        st.write(last_web_search_result)
+
+st.markdown('<div class="bottom-safe-space"></div>', unsafe_allow_html=True)
+
+user_input = st.chat_input("예: 오늘 비 오고 바람이 불어. 학교 갈 때 뭐 입을까?")
 
 if user_input:
     cleaned_user_input = clean_text(user_input)
@@ -621,13 +793,14 @@ if user_input:
     if use_web_search:
         search_query = (
             f"{location} 오늘 날씨 옷차림 "
-            f"{final_weather_condition} {final_temperature_range} {cleaned_user_input}"
+            f"{final_weather_condition} {final_temperature_range} {final_wind_level} "
+            f"{situation} {final_style} {cleaned_user_input}"
         )
-        web_search_result = search_duckduckgo(search_query, max_results=3)
-        with st.expander("DuckDuckGo 검색 참고 정보 보기"):
-            st.write(web_search_result)
+        web_search_result = search_duckduckgo(search_query, max_results=search_result_count)
+        st.session_state["last_web_search_result"] = web_search_result
     else:
-        web_search_result = "웹 검색을 사용하지 않았습니다."
+        web_search_result = "DuckDuckGo 검색을 사용하지 않았습니다."
+        st.session_state.pop("last_web_search_result", None)
 
     prompt = build_weather_fit_prompt(
         user_input=cleaned_user_input,
@@ -643,7 +816,7 @@ if user_input:
         try:
             ai_answer = ask_ollama(prompt, model_name)
         except requests.exceptions.ConnectionError:
-            ai_answer = "Ollama가 실행 중이 아닙니다. PowerShell에서 ollama run gemma4:e4b 명령어를 실행한 뒤 다시 시도해주세요."
+            ai_answer = f"Ollama가 실행 중이 아닙니다. PowerShell에서 ollama run {DEFAULT_LLM_MODEL} 명령어를 실행한 뒤 다시 시도해주세요."
             st.error("Ollama 연결 실패")
         except requests.exceptions.Timeout:
             ai_answer = "답변 시간이 너무 오래 걸렸습니다. 질문을 조금 짧게 입력하거나 다시 시도해주세요."
