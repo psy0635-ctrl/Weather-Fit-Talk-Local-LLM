@@ -636,7 +636,7 @@ st.sidebar.markdown("---")
 
 model_name = st.sidebar.selectbox(
     "Local LLM Model",
-    LLM_MODEL_OPTIONS,
+    ["gemma4:e4b", "gemma3:4b", "gemma3:1b"],
 )
 
 st.sidebar.markdown("### 🌐 WEB SEARCH")
