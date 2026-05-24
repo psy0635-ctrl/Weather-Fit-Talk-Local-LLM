@@ -137,416 +137,84 @@ def render_hero(
     weather_accent, weather_badge = weather_accent_map.get(weather_condition, ("#d6c27a", "WEATHER"))
     web_search_status = "ON" if use_web_search else "OFF"
 
+    accent_style = f"<style>:root {{ --hero-accent: {weather_accent}; --hero-accent-muted: {weather_accent}33; }}</style>"
+
     hero_html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="UTF-8">
-    <style>
-        * {{ box-sizing: border-box; }}
-        body {{
-            margin: 0;
-            padding: 0;
-            background: #050505;
-            font-family: Arial, Helvetica, sans-serif;
-        }}
-        .canvas {{
-            width: 100%;
-            min-height: auto;
-            background:
-                linear-gradient(120deg, rgba(255,255,255,0.05), transparent 36%),
-                radial-gradient(circle at 78% 12%, {weather_accent}33, transparent 28%),
-                #050505;
-            color: #f4f1ea;
-            padding: 30px 34px 28px;
-            position: relative;
-            overflow: visible;
-            border: 1px solid rgba(244,241,234,0.16);
-        }}
-        .canvas::before {{
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(244,241,234,0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(244,241,234,0.045) 1px, transparent 1px);
-            background-size: 28px 28px;
-            opacity: 0.7;
-            pointer-events: none;
-        }}
-        .inner {{ position: relative; z-index: 2; }}
-        .nav {{
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            border-bottom: 1px solid rgba(244,241,234,0.2);
-            padding-bottom: 12px;
-            margin-bottom: 30px;
-        }}
-        .brand {{
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 0;
-        }}
-        .brand-symbol {{
-            width: 30px;
-            height: 30px;
-            border: 2px solid #f4f1ea;
-            border-radius: 50%;
-            position: relative;
-        }}
-        .brand-symbol::before,
-        .brand-symbol::after {{
-            content: "";
-            position: absolute;
-            width: 9px;
-            height: 2px;
-            background: #f4f1ea;
-            top: 12px;
-        }}
-        .brand-symbol::before {{ left: -10px; }}
-        .brand-symbol::after {{ right: -10px; }}
-        .hero {{
-            display: grid;
-            grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.68fr);
-            gap: 28px;
-            align-items: stretch;
-        }}
-        .hero-left {{
-            min-height: 340px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }}
-        .kicker {{
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 0.08em;
-            margin-bottom: 18px;
-            color: {weather_accent};
-        }}
-        .title {{
-            font-size: 70px;
-            line-height: 0.92;
-            font-weight: 950;
-            letter-spacing: 0;
-            max-width: 740px;
-        }}
-        .title-mark {{
-            display: inline-block;
-            color: {weather_accent};
-        }}
-        .desc {{
-            margin-top: 22px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(244,241,234,0.2);
-            font-size: 16px;
-            line-height: 1.7;
-            max-width: 640px;
-            color: rgba(244,241,234,0.88);
-        }}
-        .concept-row {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }}
-        .concept-pill {{
-            border: 1px solid rgba(244,241,234,0.18);
-            background: rgba(244,241,234,0.08);
-            color: #f4f1ea;
-            padding: 9px 12px;
-            font-size: 12px;
-            font-weight: 900;
-            border-radius: 999px;
-        }}
-        .start-note {{
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            width: fit-content;
-            margin-top: 20px;
-            padding: 13px 16px;
-            background: {weather_accent};
-            color: #050505;
-            font-size: 13px;
-            font-weight: 950;
-            border-radius: 8px;
-        }}
-        .start-note span {{
-            width: 28px;
-            height: 1px;
-            background: #050505;
-            display: inline-block;
-        }}
-        .right-stack {{
-            display: grid;
-            gap: 16px;
-        }}
-        .character-card {{
-            width: 100%;
-            min-height: 248px;
-            background: #f4f1ea;
-            color: #050505;
-            padding: 18px;
-            margin-left: auto;
-            border: 1px solid rgba(244,241,234,0.32);
-            border-radius: 8px;
-            box-shadow: 0 28px 60px rgba(0,0,0,0.34);
-        }}
-        .character-label {{
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 0.08em;
-            color: #685f4b;
-            border-bottom: 1px solid rgba(5,5,5,0.16);
-            padding-bottom: 12px;
-            margin-bottom: 16px;
-        }}
-        .weather-icon {{
-            width: 116px;
-            height: 92px;
-            margin: 2px auto 12px auto;
-            position: relative;
-        }}
-        .sun {{
-            position: absolute;
-            right: 8px;
-            top: 4px;
-            width: 34px;
-            height: 34px;
-            background: {weather_accent};
-            border-radius: 50%;
-            box-shadow: 0 0 0 11px {weather_accent}33;
-        }}
-        .cloud {{
-            position: absolute;
-            left: 14px;
-            top: 34px;
-            width: 86px;
-            height: 42px;
-            background: #050505;
-            border-radius: 40px;
-        }}
-        .cloud::before {{
-            content: "";
-            position: absolute;
-            left: 17px;
-            top: -24px;
-            width: 44px;
-            height: 44px;
-            background: #050505;
-            border-radius: 50%;
-        }}
-        .cloud::after {{
-            content: "";
-            position: absolute;
-            right: 13px;
-            top: -15px;
-            width: 36px;
-            height: 36px;
-            background: #050505;
-            border-radius: 50%;
-        }}
-        .rain {{
-            position: absolute;
-            left: 30px;
-            top: 82px;
-            width: 5px;
-            height: 24px;
-            background: {weather_accent};
-            transform: rotate(18deg);
-            box-shadow: 30px 0 0 {weather_accent}, 60px 0 0 {weather_accent};
-        }}
-        .character-name {{
-            font-size: 24px;
-            font-weight: 950;
-            letter-spacing: 0;
-            margin-top: 18px;
-        }}
-        .character-desc {{
-            margin-top: 8px;
-            font-size: 13px;
-            color: #37322b;
-            line-height: 1.6;
-        }}
-        .option-card {{
-            background: rgba(244,241,234,0.1);
-            border: 1px solid rgba(244,241,234,0.18);
-            border-radius: 8px;
-            padding: 18px;
-            color: #f4f1ea;
-        }}
-        .option-heading {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 12px;
-        }}
-        .option-title {{
-            font-size: 13px;
-            font-weight: 950;
-            letter-spacing: 0.08em;
-        }}
-        .weather-badge {{
-            border: 1px solid {weather_accent};
-            color: {weather_accent};
-            border-radius: 999px;
-            padding: 5px 9px;
-            font-size: 11px;
-            font-weight: 950;
-        }}
-        .option-list {{ display: grid; gap: 8px; }}
-        .option-list div {{
-            display: flex;
-            justify-content: space-between;
-            gap: 18px;
-            border-bottom: 1px solid rgba(244,241,234,0.16);
-            padding-bottom: 7px;
-            font-size: 13px;
-        }}
-        .option-list span {{ color: rgba(244,241,234,0.6); }}
-        .option-list b {{ color: #f4f1ea; text-align: right; }}
-        .info-grid {{
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(260px, 0.6fr);
-            gap: 18px;
-            margin-top: 20px;
-        }}
-        .info-card {{
-            background: rgba(244,241,234,0.08);
-            border: 1px solid rgba(244,241,234,0.16);
-            border-radius: 8px;
-            padding: 18px;
-            color: #f4f1ea;
-        }}
-        .info-title {{
-            font-size: 13px;
-            font-weight: 950;
-            letter-spacing: 0.06em;
-            margin-bottom: 12px;
-            color: {weather_accent};
-        }}
-        .info-text {{
-            font-size: 13px;
-            line-height: 1.8;
-            color: rgba(244,241,234,0.82);
-        }}
-        .mini-metric {{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }}
-        .mini-metric div {{
-            background: rgba(244,241,234,0.08);
-            border: 1px solid rgba(244,241,234,0.14);
-            border-radius: 8px;
-            padding: 12px;
-        }}
-        .mini-metric span {{
-            display: block;
-            color: rgba(244,241,234,0.58);
-            font-size: 11px;
-            font-weight: 900;
-            margin-bottom: 7px;
-        }}
-        .mini-metric b {{
-            display: block;
-            color: #f4f1ea;
-            font-size: 13px;
-            line-height: 1.35;
-        }}
-        @media (max-width: 900px) {{
-            .canvas {{ min-height: auto; padding: 26px 22px; }}
-            .hero, .info-grid {{ grid-template-columns: 1fr; }}
-            .hero-left {{ min-height: auto; }}
-            .title {{ font-size: 54px; }}
-            .right-stack {{ margin-top: 24px; }}
-        }}
-    </style>
-    </head>
-    <body>
-        <div class="canvas">
-            <div class="inner">
-                <div class="nav">
-                    <div class="brand">
-                        <div class="brand-symbol"></div>
-                        <div>WEATHER FIT TALK</div>
+    <div class="canvas">
+        <div class="inner">
+            <div class="nav">
+                <div class="brand">
+                    <div class="brand-symbol"></div>
+                    <div>WEATHER FIT TALK</div>
+                </div>
+            </div>
+            <div class="hero">
+                <div class="hero-left">
+                    <div>
+                        <div class="kicker">WEATHER SERVICE × FASHION EDITORIAL × LOCAL LLM</div>
+                        <div class="title">WEATHER<br><span class="title-mark">FIT</span> TALK</div>
+                        <div class="desc">
+                            날씨, 기온, 바람, 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 AI 스타일리스트
+                        </div>
+                        <div class="concept-row">
+                            <div class="concept-pill">TODAY: {html.escape(weather_condition)}</div>
+                            <div class="concept-pill">STYLE: {html.escape(style)}</div>
+                            <div class="concept-pill">LOCAL MODEL: GEMMA4:E4B</div>
+                        </div>
+                        <div class="start-note"><span></span>ASK THE WEATHER STYLIST BELOW</div>
                     </div>
                 </div>
-                <div class="hero">
-                    <div class="hero-left">
-                        <div>
-                            <div class="kicker">WEATHER SERVICE × FASHION EDITORIAL × LOCAL LLM</div>
-                            <div class="title">WEATHER<br><span class="title-mark">FIT</span> TALK</div>
-                            <div class="desc">
-                                날씨, 기온, 바람, 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 AI 스타일리스트
-                            </div>
-                            <div class="concept-row">
-                                <div class="concept-pill">TODAY: {html.escape(weather_condition)}</div>
-                                <div class="concept-pill">STYLE: {html.escape(style)}</div>
-                                <div class="concept-pill">LOCAL MODEL: GEMMA4:E4B</div>
-                            </div>
-                            <div class="start-note"><span></span>ASK THE WEATHER STYLIST BELOW</div>
+                <div class="right-stack">
+                    <div class="character-card">
+                        <div class="character-label">AI WEATHER STYLIST</div>
+                        <div class="weather-icon">
+                            <div class="sun"></div>
+                            <div class="cloud"></div>
+                            <div class="rain"></div>
+                        </div>
+                        <div class="character-name">WEATHER STYLIST</div>
+                        <div class="character-desc">
+                            패션 에디터처럼 무드를 잡고, 날씨 비서처럼 현실적인 착용감을 챙깁니다.
                         </div>
                     </div>
-                    <div class="right-stack">
-                        <div class="character-card">
-                            <div class="character-label">AI WEATHER STYLIST</div>
-                            <div class="weather-icon">
-                                <div class="sun"></div>
-                                <div class="cloud"></div>
-                                <div class="rain"></div>
-                            </div>
-                            <div class="character-name">WEATHER STYLIST</div>
-                            <div class="character-desc">
-                                패션 에디터처럼 무드를 잡고, 날씨 비서처럼 현실적인 착용감을 챙깁니다.
-                            </div>
+                    <div class="option-card">
+                        <div class="option-heading">
+                            <div class="option-title">TODAY WEATHER OPTION</div>
+                            <div class="weather-badge">{html.escape(weather_badge)}</div>
                         </div>
-                        <div class="option-card">
-                            <div class="option-heading">
-                                <div class="option-title">TODAY WEATHER OPTION</div>
-                                <div class="weather-badge">{html.escape(weather_badge)}</div>
-                            </div>
-                            <div class="option-list">
-                                <div><span>지역</span><b>{html.escape(location)}</b></div>
-                                <div><span>날씨</span><b>{html.escape(weather_condition)}</b></div>
-                                <div><span>기온</span><b>{html.escape(temperature_range)}</b></div>
-                                <div><span>바람</span><b>{html.escape(wind_level)}</b></div>
-                                <div><span>상황</span><b>{html.escape(situation)}</b></div>
-                                <div><span>스타일</span><b>{html.escape(style)}</b></div>
-                                <div><span>웹 검색</span><b>{html.escape(web_search_status)}</b></div>
-                                <div><span>검색 엔진</span><b>DuckDuckGo</b></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <div class="info-title">WHAT IS WEATHER FIT?</div>
-                        <div class="info-text">
-                            WEATHER FIT TALK는 날씨와 사용자의 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 로컬 LLM 기반 AI 챗봇입니다.
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-title">TODAY FIT SIGNAL</div>
-                        <div class="mini-metric">
-                            <div><span>MOOD</span><b>{html.escape(style)}</b></div>
-                            <div><span>WEATHER</span><b>{html.escape(weather_condition)}</b></div>
-                            <div><span>SCENE</span><b>{html.escape(situation)}</b></div>
+                        <div class="option-list">
+                            <div><span>지역</span><b>{html.escape(location)}</b></div>
+                            <div><span>날씨</span><b>{html.escape(weather_condition)}</b></div>
+                            <div><span>기온</span><b>{html.escape(temperature_range)}</b></div>
+                            <div><span>바람</span><b>{html.escape(wind_level)}</b></div>
+                            <div><span>상황</span><b>{html.escape(situation)}</b></div>
+                            <div><span>스타일</span><b>{html.escape(style)}</b></div>
+                            <div><span>웹 검색</span><b>{html.escape(web_search_status)}</b></div>
+                            <div><span>검색 엔진</span><b>DuckDuckGo</b></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-title">WHAT IS WEATHER FIT?</div>
+                    <div class="info-text">
+                        WEATHER FIT TALK는 날씨와 사용자의 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 로컬 LLM 기반 AI 챗봇입니다.
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-title">TODAY FIT SIGNAL</div>
+                    <div class="mini-metric">
+                        <div><span>MOOD</span><b>{html.escape(style)}</b></div>
+                        <div><span>WEATHER</span><b>{html.escape(weather_condition)}</b></div>
+                        <div><span>SCENE</span><b>{html.escape(situation)}</b></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </body>
-    </html>
+    </div>
     """
-    st.markdown(hero_html, unsafe_allow_html=True)
+    st.markdown(accent_style + hero_html, unsafe_allow_html=True)
 
 
 def render_user_message(content: str) -> None:
