@@ -1,865 +1,648 @@
 /* ==============================
    WEATHER FIT TALK
+   Dark × Gold × Ivory
 ============================== */
 
 :root {
-    --black: #050505;
-    --navy: #070b12;
-    --panel: #101010;
-    --ivory: #f4f1ea;
-    --ivory-2: #e7e0d2;
-    --muted: #b8b2a8;
-    --accent: #d6c27a;
-    --line: rgba(244, 241, 234, 0.18);
+    --bg:          #0E0E10;
+    --panel:       #111113;
+    --ivory:       #F0EBE0;
+    --ivory-muted: rgba(240, 235, 224, 0.50);
+    --ivory-dim:   rgba(240, 235, 224, 0.10);
+    --gold:        #C8A96E;
+    --gold-muted:  rgba(200, 169, 110, 0.20);
+    --green:       #4CAF7D;
+    --black:       #080809;
+    --white:       #FFFFFF;
 }
 
-html,
-body {
+/* ── Base ── */
+html, body {
     min-height: 100%;
     height: auto !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
 }
 
+html, body,
+.stApp,
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"],
+[data-testid="stMainBlockContainer"] {
+    background: var(--bg) !important;
+    color: var(--ivory);
+}
+
 .stApp {
     min-height: 100vh !important;
     height: auto !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
-    background:
-        radial-gradient(circle at 78% 0%, rgba(90, 169, 230, 0.11), transparent 30%),
-        linear-gradient(180deg, var(--navy), var(--black) 42%) !important;
-    color: var(--ivory);
     font-family: Arial, Helvetica, sans-serif;
-}
-
-.block-container {
-    max-width: 1180px !important;
-    padding-top: 2rem !important;
-    padding-right: 2.2rem !important;
-    padding-bottom: 8rem !important;
-    padding-left: 2.2rem !important;
-    overflow: visible !important;
-}
-
-.main-shell,
-.app-shell,
-.editorial-shell,
-.weather-fit-shell,
-.content-shell {
-    width: 100%;
-    height: auto !important;
-    min-height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    padding-bottom: 0 !important;
-}
-
-.weather-fit-shell {
-    width: 100%;
-    max-width: 1180px !important;
-    margin: 0 auto !important;
-    background: transparent !important;
-}
-
-.hero-section {
-    width: 100%;
-    height: auto !important;
-    min-height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    margin-bottom: 1.5rem !important;
-    padding: 1.5rem 0 0.5rem !important;
-    color: var(--ivory);
-}
-
-.brand-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-bottom: 12px;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--line);
-}
-
-.brand-symbol {
-    width: 30px;
-    height: 30px;
-    border: 2px solid var(--ivory);
-    border-radius: 50%;
-    position: relative;
-    flex: 0 0 auto;
-}
-
-.brand-symbol::before,
-.brand-symbol::after {
-    content: "";
-    position: absolute;
-    width: 9px;
-    height: 2px;
-    background: var(--ivory);
-    top: 12px;
-}
-
-.brand-symbol::before {
-    left: -10px;
-}
-
-.brand-symbol::after {
-    right: -10px;
-}
-
-.brand-title {
-    color: var(--ivory);
-    font-size: 1.25rem;
-    font-weight: 950;
-}
-
-.hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.8fr);
-    gap: 2rem;
-    align-items: start !important;
-    height: auto !important;
-    min-height: auto !important;
-    overflow: visible !important;
-}
-
-.hero-copy {
-    min-width: 0;
-}
-
-.hero-kicker {
-    color: var(--accent);
-    font-size: 0.75rem;
-    font-weight: 950;
-    letter-spacing: 0.08em;
-    margin-bottom: 1rem;
-}
-
-.hero-title {
-    color: var(--ivory) !important;
-    font-size: clamp(3.4rem, 7vw, 5rem) !important;
-    line-height: 0.92 !important;
-    font-weight: 950 !important;
-    letter-spacing: 0 !important;
-    margin: 0 !important;
-}
-
-.hero-title span {
-    color: var(--accent);
-}
-
-.hero-desc {
-    max-width: 640px;
-    margin: 1.25rem 0 0 !important;
-    padding-top: 0.9rem;
-    border-top: 1px solid var(--line);
-    color: rgba(244, 241, 234, 0.88) !important;
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-.hero-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 1.25rem;
-}
-
-.hero-tags span {
-    border: 1px solid var(--line);
-    background: rgba(244, 241, 234, 0.08);
-    color: var(--ivory);
-    padding: 9px 12px;
-    font-size: 0.75rem;
-    font-weight: 900;
-    border-radius: 999px;
-}
-
-.hero-side {
-    display: grid;
-    gap: 1rem;
-    min-width: 0;
-}
-
-.stylist-card {
-    background: var(--ivory);
-    color: var(--black);
-    border: 1px solid rgba(244, 241, 234, 0.32);
-    border-radius: 8px;
-    padding: 1.1rem;
-    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.34);
-}
-
-.stylist-label {
-    color: #685f4b;
-    border-bottom: 1px solid rgba(5, 5, 5, 0.16);
-    padding-bottom: 0.75rem;
-    margin-bottom: 1rem;
-    font-size: 0.75rem;
-    font-weight: 950;
-    letter-spacing: 0.08em;
-}
-
-.stylist-icon {
-    width: 116px;
-    min-height: 92px;
-    margin: 0.1rem auto 0.75rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.stylist-sun {
-    width: 34px;
-    height: 34px;
-    align-self: flex-end;
-    margin-right: 8px;
-    margin-bottom: -8px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 0 11px rgba(214, 194, 122, 0.2);
-}
-
-.stylist-cloud {
-    width: 86px;
-    height: 42px;
-    background:
-        radial-gradient(circle at 34% 0%, var(--black) 0 23px, transparent 24px),
-        radial-gradient(circle at 74% 22%, var(--black) 0 18px, transparent 19px),
-        linear-gradient(var(--black), var(--black));
-    border-radius: 40px;
-}
-
-.stylist-rain {
-    width: 5px;
-    height: 24px;
-    margin-top: 7px;
-    margin-right: 60px;
-    background: var(--accent);
-    transform: rotate(18deg);
-    box-shadow: 30px 0 0 var(--accent), 60px 0 0 var(--accent);
-}
-
-.stylist-name {
-    color: var(--black);
-    font-size: 1.5rem;
-    font-weight: 950;
-    margin-top: 0.9rem;
-}
-
-.stylist-desc {
-    color: #37322b;
-    font-size: 0.82rem;
-    line-height: 1.6;
-    margin-top: 0.5rem;
-}
-
-.weather-option-card {
-    background: rgba(244, 241, 234, 0.1);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 1.1rem;
-    color: var(--ivory);
-}
-
-.weather-option-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-}
-
-.weather-option-title {
-    font-size: 0.8rem;
-    font-weight: 950;
-    letter-spacing: 0.08em;
-}
-
-.weather-badge {
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    border-radius: 999px;
-    padding: 5px 9px;
-    font-size: 0.68rem;
-    font-weight: 950;
-}
-
-.weather-option-list {
-    display: grid;
-    gap: 8px;
-}
-
-.weather-option-list div {
-    display: flex;
-    justify-content: space-between;
-    gap: 18px;
-    border-bottom: 1px solid rgba(244, 241, 234, 0.16);
-    padding-bottom: 7px;
-    font-size: 0.82rem;
-}
-
-.weather-option-list span {
-    color: rgba(244, 241, 234, 0.6);
-}
-
-.weather-option-list b {
-    color: var(--ivory);
-    text-align: right;
-}
-
-.hero-shell,
-.hero-section,
-.hero-grid,
-.weather-layout,
-.chat-section {
-    width: 100%;
-    height: auto !important;
-    min-height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-}
-
-.info-grid,
-.lower-card-grid,
-.chat-section {
-    margin-top: 1.25rem;
-    margin-bottom: 1.5rem;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.6fr);
-    gap: 18px;
-}
-
-.info-card {
-    background: rgba(244, 241, 234, 0.08);
-    border: 1px solid rgba(244, 241, 234, 0.16);
-    border-radius: 8px;
-    padding: 18px;
-    color: var(--ivory);
-}
-
-.info-title {
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 950;
-    letter-spacing: 0.06em;
-    margin-bottom: 12px;
-}
-
-.info-text {
-    color: rgba(244, 241, 234, 0.82);
-    font-size: 13px;
-    line-height: 1.8;
-}
-
-.mini-metric {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.mini-metric div {
-    background: rgba(244, 241, 234, 0.08);
-    border: 1px solid rgba(244, 241, 234, 0.14);
-    border-radius: 8px;
-    padding: 12px;
-}
-
-.mini-metric span {
-    display: block;
-    color: rgba(244, 241, 234, 0.58);
-    font-size: 11px;
-    font-weight: 900;
-    margin-bottom: 7px;
-}
-
-.mini-metric b {
-    display: block;
-    color: var(--ivory);
-    font-size: 13px;
-    line-height: 1.35;
 }
 
 header[data-testid="stHeader"] {
     background: transparent !important;
 }
 
-/* Sidebar weather control panel */
-
-section[data-testid="stSidebar"] {
-    width: 300px !important;
-    background:
-        linear-gradient(180deg, rgba(244, 241, 234, 0.055), rgba(244, 241, 234, 0.015)),
-        var(--black) !important;
-    border-right: 1px solid var(--line) !important;
-}
-
-section[data-testid="stSidebar"] > div {
-    padding: 1.4rem 1rem 1.8rem;
-}
-
-section[data-testid="stSidebar"] h2 {
-    color: var(--ivory) !important;
-    font-size: 1.05rem !important;
-    font-weight: 950 !important;
-    letter-spacing: 0;
-    margin-bottom: 0.2rem !important;
-}
-
-section[data-testid="stSidebar"] h2::after {
-    content: "";
-    display: block;
-    width: 44px;
-    height: 2px;
-    margin-top: 0.62rem;
-    background: var(--accent);
-}
-
-section[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
-    color: var(--muted) !important;
-    line-height: 1.55;
-}
-
-section[data-testid="stSidebar"] hr {
-    border-color: var(--line) !important;
-    margin: 1rem 0 !important;
-}
-
-section[data-testid="stSidebar"] label {
-    color: var(--muted) !important;
-    font-size: 0.72rem !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-section[data-testid="stSidebar"] div[data-baseweb="select"] > div,
-section[data-testid="stSidebar"] div[data-baseweb="input"] > div {
-    min-height: 42px;
-    background: var(--ivory) !important;
-    border: 1px solid rgba(244, 241, 234, 0.35) !important;
-    border-radius: 8px !important;
-    color: var(--black) !important;
-}
-
-section[data-testid="stSidebar"] div[data-baseweb="select"] span,
-section[data-testid="stSidebar"] input {
-    color: var(--black) !important;
-    font-size: 0.9rem !important;
-    font-weight: 700 !important;
-}
-
-section[data-testid="stSidebar"] .stCheckbox label {
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--ivory) !important;
-}
-
-section[data-testid="stSidebar"] .stButton > button {
-    width: 100%;
-    min-height: 46px;
-    border-radius: 8px !important;
-    border: 1px solid var(--accent) !important;
-    background: var(--accent) !important;
-    color: var(--black) !important;
-    font-size: 0.9rem !important;
-    font-weight: 950 !important;
-}
-
-section[data-testid="stSidebar"] .stButton > button:hover {
-    background: var(--ivory) !important;
-    border-color: var(--ivory) !important;
-    color: var(--black) !important;
-}
-
-.sidebar-meta {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 0.9rem;
-    color: var(--muted) !important;
-    font-size: 0.72rem;
-    line-height: 1.75;
-}
-
-.sidebar-meta b {
-    color: var(--ivory) !important;
-}
-
-/* Try prompt */
-
-.try-box {
-    max-width: 760px;
-    margin: 1.25rem 0 1.5rem;
-    padding: 1.05rem 1.15rem;
-    background: rgba(244, 241, 234, 0.07);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-}
-
-.try-title {
-    color: var(--accent);
-    font-size: 0.72rem;
-    font-weight: 950;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
-}
-
-.try-text {
-    color: var(--ivory);
-    font-size: 0.96rem;
-    line-height: 1.75;
-}
-
-/* User question card */
-
-.user-question-wrap {
-    display: flex;
-    justify-content: flex-end;
-    margin: 1.55rem 0;
-}
-
-.user-question-card {
-    width: fit-content;
-    max-width: min(720px, 86%);
-    background: var(--ivory);
-    color: var(--black);
-    border: 1px solid var(--ivory-2);
-    border-radius: 8px;
-    padding: 1.05rem 1.2rem;
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
-}
-
-.user-question-label {
-    color: #665f52;
-    font-size: 0.72rem;
-    font-weight: 950;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.58rem;
-}
-
-.user-question-text {
-    color: var(--black);
-    font-size: 1.03rem;
-    font-weight: 800;
-    line-height: 1.75;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-}
-
-/* Weather Stylist avatar */
-
-.weather-avatar-card {
-    min-height: 156px;
-    background: var(--ivory);
-    color: var(--black);
-    border: 1px solid var(--ivory-2);
-    border-radius: 8px;
-    padding: 0.85rem 0.65rem;
-    text-align: center;
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
-}
-
-.weather-mini-icon {
-    width: 74px;
-    height: 78px;
-    margin: 0 auto 0.65rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.weather-mini-icon::before {
-    content: "";
-    display: block;
-    align-self: flex-end;
-    width: 24px;
-    height: 24px;
-    margin-right: 5px;
-    margin-bottom: -5px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 0 7px rgba(214, 194, 122, 0.28);
-}
-
-.mini-cloud {
-    position: relative;
-    width: 58px;
-    height: 28px;
-    background:
-        radial-gradient(circle at 32% 0%, var(--black) 0 15px, transparent 16px),
-        radial-gradient(circle at 70% 18%, var(--black) 0 12px, transparent 13px),
-        linear-gradient(var(--black), var(--black));
-    border-radius: 30px;
-}
-
-.mini-cloud::before {
-    content: none;
-}
-
-.mini-cloud::after {
-    content: none;
-}
-
-.mini-rain {
-    position: relative;
-    width: 4px;
-    height: 18px;
-    margin-top: 8px;
-    margin-right: 42px;
-    background: var(--accent);
-    transform: rotate(18deg);
-    box-shadow: 22px 0 0 var(--accent), 44px 0 0 var(--accent);
-}
-
-.mini-name {
-    color: var(--black);
-    font-size: 0.68rem;
-    font-weight: 950;
-    letter-spacing: 0.06em;
-    line-height: 1.25;
-}
-
-/* AI answer card */
-
-.weather-answer-card {
-    max-width: 820px;
-    min-height: 156px;
-    background: var(--ivory);
-    color: var(--black);
-    border: 1px solid var(--ivory-2);
-    border-radius: 8px;
-    padding: 1.15rem 1.3rem 1.25rem;
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
-}
-
-.weather-answer-label {
-    display: inline-block;
-    background: var(--black);
-    color: var(--ivory);
-    border-radius: 6px;
-    padding: 0.32rem 0.58rem;
-    margin-bottom: 0.9rem;
-    font-size: 0.7rem;
-    font-weight: 950;
-    letter-spacing: 0.08em;
-}
-
-.weather-answer-text {
-    color: var(--black);
-    max-width: 760px;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.9;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-}
-
-.weather-answer-text strong,
-.weather-answer-text b {
-    color: var(--black);
-    font-weight: 950;
-}
-
-.weather-answer-text br {
-    display: block;
-    content: "";
-    margin-bottom: 0.28rem;
-}
-
-/* Streamlit defaults and chat input */
-
-.stMarkdown {
-    color: var(--ivory);
-}
-
-.stMarkdown p,
-.stMarkdown li {
-    color: var(--ivory);
-    line-height: 1.8;
-}
-
-div[data-testid="stAlert"],
-.stAlert {
-    border-radius: 8px !important;
-}
-
-.stSpinner > div {
-    color: var(--ivory) !important;
-}
-
-div[data-testid="stChatInput"] {
-    background: transparent !important;
-}
-
-div[data-testid="stChatInput"] > div {
-    background: var(--ivory) !important;
-    border: 1px solid rgba(244, 241, 234, 0.42) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
-}
-
-div[data-testid="stChatInput"] textarea {
-    min-height: 46px !important;
-    color: var(--black) !important;
-    background: var(--ivory) !important;
-    border-radius: 8px !important;
-    font-size: 0.98rem !important;
-    font-weight: 700 !important;
-    line-height: 1.5 !important;
-}
-
-div[data-testid="stChatInput"] textarea::placeholder {
-    color: #6d675c !important;
-}
-
-div[data-testid="stChatInput"] button {
-    background: var(--black) !important;
-    color: var(--ivory) !important;
-    border-radius: 7px !important;
-}
-
-button {
-    border-radius: 8px !important;
-}
-
-@media (max-width: 760px) {
-    .block-container {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-    }
-
-    .hero-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .info-grid,
-    .mini-metric {
-        grid-template-columns: 1fr;
-    }
-
-    .user-question-card,
-    .weather-answer-card {
-        max-width: 100%;
-    }
-
-    .weather-avatar-card {
-        min-height: 128px;
-    }
-}
-
-/* Final layout safety overrides for Streamlit scroll behavior */
-
-html,
-body {
-    min-height: 100% !important;
-    height: auto !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-}
-
-.stApp {
-    min-height: 100vh !important;
-    height: auto !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-}
-
-main {
-    height: auto !important;
-    max-height: none !important;
+/* ── Block container ── */
+.block-container,
+[data-testid="stMainBlockContainer"] {
+    max-width: 100% !important;
+    padding-top: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 10rem !important;
+    padding-left: 0 !important;
     overflow: visible !important;
+    background: var(--bg) !important;
 }
 
-[data-testid="stAppViewContainer"] {
-    height: auto !important;
-    min-height: 100vh !important;
-    max-height: none !important;
-    overflow-y: auto !important;
-}
-
+main,
+[data-testid="stAppViewContainer"],
 [data-testid="stMain"] {
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
 }
 
-[data-testid="stMainBlockContainer"],
-.block-container {
-    max-width: 1180px !important;
-    padding-top: 2rem !important;
-    padding-bottom: 7rem !important;
-    overflow: visible !important;
+/* ── Hero Nav ── */
+.hero-nav {
+    background: var(--panel);
+    border-bottom: 1px solid var(--ivory-dim);
+    height: 44px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
 }
 
-.main-shell,
-.app-shell,
-.editorial-shell,
-.weather-fit-shell,
-.content-shell,
-.hero-section,
-.hero-grid,
-.weather-layout,
-.chat-section,
-.info-grid,
-.lower-card-grid {
-    height: auto !important;
-    min-height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    position: relative !important;
+.hero-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.editorial-shell,
-.weather-fit-shell,
-.main-shell,
-.app-shell {
-    padding-bottom: 0 !important;
+.hero-nav-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(200, 169, 110, 0.6);
+    flex-shrink: 0;
 }
 
-.info-grid,
-.lower-card-grid,
-.chat-section {
-    margin-top: 1.25rem !important;
-    margin-bottom: 1.5rem !important;
+.hero-nav-title {
+    color: var(--ivory);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
 }
 
-.hero-section {
-    height: auto !important;
-    min-height: auto !important;
-    max-height: none !important;
-    margin-bottom: 1.5rem !important;
-    padding: 1.5rem 0 1rem !important;
-    overflow: visible !important;
+.hero-nav-center {
+    color: var(--ivory-muted);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    font-weight: 900;
 }
 
-.hero-grid {
-    height: auto !important;
-    min-height: auto !important;
-    align-items: start !important;
+.hero-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ivory-muted);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    font-weight: 900;
 }
 
-.chat-history,
-.message-list,
-.chat-section {
-    padding-bottom: 3rem !important;
-    margin-bottom: 2rem !important;
+.hero-nav-green-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(76, 175, 125, 0.7);
+    flex-shrink: 0;
 }
 
-.bottom-safe-space {
-    height: 60px !important;
+/* ── Hero Caption Bar ── */
+.hero-caption-bar {
+    background: var(--bg);
+    border-bottom: 1px solid var(--ivory-dim);
+    padding: 10px 24px;
+    color: var(--ivory-muted);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    font-weight: 900;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+/* ── Hero Main ── */
+.hero-main {
+    background: var(--bg);
+    padding: 48px 32px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    align-items: start;
+}
+
+/* ── Hero Left ── */
+.hero-headline {
+    line-height: 0.90;
+    letter-spacing: -0.03em;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+    font-weight: 900;
+}
+
+.hero-line-white {
+    display: block;
+    color: var(--ivory);
+    font-size: clamp(72px, 10vw, 120px);
+    font-weight: 900;
+    line-height: 0.90;
+}
+
+.hero-line-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.18em;
+}
+
+.hero-line-gold {
+    color: var(--gold);
+    font-size: clamp(72px, 10vw, 120px);
+    font-weight: 900;
+    line-height: 0.90;
+}
+
+.hero-line-italic {
+    color: var(--ivory);
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 0.90;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero-body {
+    max-width: 480px;
+    margin-top: 28px;
+    font-size: 14px;
+    color: var(--ivory-muted);
+    line-height: 1.80;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+}
+
+.hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.hero-tag {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(240, 235, 224, 0.08);
+    border: 1px solid var(--ivory-dim);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: var(--ivory);
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+.hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.hero-cta-line {
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--ivory-muted);
+}
+
+.hero-cta-text {
+    color: var(--ivory-muted);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    font-weight: 900;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+/* ── Hero Right ── */
+.hero-card {
+    background: rgba(240, 235, 224, 0.06);
+    border: 1px solid var(--ivory-dim);
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.hero-card-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--ivory-muted);
+    font-weight: 900;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ivory-dim);
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.hero-weather-icon {
+    width: 80px;
+    height: 60px;
+    margin: 18px auto;
+    position: relative;
+}
+
+.hero-weather-icon::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 36px;
+    background: var(--ivory-dim);
+    border-radius: 20px;
+}
+
+.hero-weather-icon::after {
+    content: "";
+    position: absolute;
+    bottom: 16px;
+    right: 4px;
+    width: 28px;
+    height: 28px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(200, 169, 110, 0.5);
+}
+
+.hero-stylist-name {
+    margin-top: 18px;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--ivory);
+    letter-spacing: -0.02em;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+.hero-stylist-desc {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--ivory-muted);
+    line-height: 1.70;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero-stylist-vol {
+    margin-top: 16px;
+    font-size: 9px;
+    color: var(--ivory-muted);
+    letter-spacing: 0.10em;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+.hero-option-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ivory-dim);
+}
+
+.hero-option-row:last-child {
+    border-bottom: none;
+}
+
+.hero-option-label {
+    color: var(--ivory-muted);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero-option-value {
+    color: var(--ivory);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: right;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+/* ── Hero Ticker ── */
+.hero-ticker-wrap {
+    background: var(--panel);
+    border-top: 1px solid var(--ivory-dim);
+    border-bottom: 1px solid var(--ivory-dim);
+    padding: 12px 0;
+    overflow: hidden;
+}
+
+.hero-ticker-track {
+    display: flex;
+    white-space: nowrap;
+    animation: hero-ticker 24s linear infinite;
+}
+
+.hero-ticker-text {
+    color: var(--ivory-muted);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    font-weight: 900;
+    padding-right: 60px;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+@keyframes hero-ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ── User message ── */
+.user-question-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin: 24px 2.2rem 24px 0;
+}
+
+.user-question-card {
+    width: fit-content;
+    max-width: 580px;
+    background: rgba(240, 235, 224, 0.07);
+    border: 1px solid var(--ivory-dim);
+    border-radius: 10px;
+    padding: 18px 20px;
+}
+
+.user-question-label {
+    color: var(--gold);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+.user-question-text {
+    color: var(--ivory);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.65;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+/* ── AI avatar ── */
+.weather-avatar-card {
+    background: rgba(240, 235, 224, 0.06);
+    border: 1px solid var(--ivory-dim);
+    border-radius: 10px;
+    padding: 14px 8px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.weather-avatar-icon {
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.mini-name {
+    color: var(--ivory);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-align: center;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+.mini-cloud,
+.mini-rain,
+.weather-mini-icon {
+    display: none;
+}
+
+/* ── AI answer card ── */
+.weather-answer-card {
+    background: rgba(240, 235, 224, 0.06);
+    border: 1px solid var(--ivory-dim);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 0.5rem;
+}
+
+.weather-answer-label {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    border-radius: 4px;
+    padding: 4px 10px;
+    margin-bottom: 14px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+.weather-answer-text {
+    color: var(--ivory) !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.90;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+.weather-answer-text strong,
+.weather-answer-text b {
+    color: var(--gold);
+    font-weight: 900;
+}
+
+.weather-answer-text br {
+    display: block;
+    content: "";
+    margin-bottom: 0.22rem;
+}
+
+/* ── Try prompt ── */
+.try-box {
+    max-width: 680px;
+    margin: 20px 0;
+    padding: 16px 18px;
+    background: rgba(240, 235, 224, 0.05);
+    border: 1px solid var(--ivory-dim);
+    border-radius: 8px;
+}
+
+.try-title {
+    color: var(--gold);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+.try-text {
+    color: var(--ivory);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+/* ── Sidebar ── */
+section[data-testid="stSidebar"] {
+    width: 300px !important;
+    background: var(--panel) !important;
+    border-right: 1px solid var(--ivory-dim) !important;
+}
+
+section[data-testid="stSidebar"] > div {
+    padding: 1.4rem 1.1rem 2rem;
+}
+
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    color: var(--ivory) !important;
+    font-size: 0.95rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.2rem !important;
+}
+
+section[data-testid="stSidebar"] h2::after {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 2px;
+    margin-top: 0.5rem;
+    background: var(--gold);
+}
+
+section[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+    color: var(--ivory-muted) !important;
+    font-size: 10px !important;
+    letter-spacing: 0.08em !important;
+    line-height: 1.52;
+}
+
+section[data-testid="stSidebar"] hr {
+    border-color: var(--ivory-dim) !important;
+    margin: 1rem 0 !important;
+}
+
+section[data-testid="stSidebar"] label {
+    color: var(--ivory-muted) !important;
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.10em !important;
+    text-transform: uppercase;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif !important;
+}
+
+section[data-testid="stSidebar"] div[data-baseweb="select"] > div,
+section[data-testid="stSidebar"] div[data-baseweb="input"] > div {
+    min-height: 40px;
+    background: rgba(240, 235, 224, 0.06) !important;
+    border: 1px solid var(--ivory-dim) !important;
+    border-radius: 6px !important;
+    color: var(--ivory) !important;
+}
+
+section[data-testid="stSidebar"] div[data-baseweb="select"] span,
+section[data-testid="stSidebar"] input {
+    color: var(--ivory) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+section[data-testid="stSidebar"] .stCheckbox label {
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ivory) !important;
+    font-size: 13px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button {
     width: 100%;
+    min-height: 44px;
+    border-radius: 6px !important;
+    border: none !important;
+    background: var(--gold) !important;
+    color: var(--black) !important;
+    font-size: 0.87rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.04em;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif !important;
+    transition: opacity 0.15s;
 }
 
-[data-testid="stChatInput"] {
-    z-index: 999 !important;
+section[data-testid="stSidebar"] .stButton > button:hover {
+    opacity: 0.82 !important;
 }
 
+.sidebar-meta {
+    background: rgba(240, 235, 224, 0.04);
+    border: 1px solid var(--ivory-dim);
+    border-radius: 6px;
+    padding: 14px;
+}
+
+.sidebar-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--ivory-dim);
+}
+
+.sidebar-meta-row:last-child {
+    border-bottom: none;
+}
+
+.sidebar-meta-label {
+    color: var(--ivory-muted);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+.sidebar-meta-value {
+    color: var(--ivory);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: right;
+}
+
+/* ── Sidebar visibility ── */
 [data-testid="stSidebar"],
 section[data-testid="stSidebar"] {
     display: block !important;
@@ -867,118 +650,7 @@ section[data-testid="stSidebar"] {
     min-width: 280px !important;
 }
 
-
-button[kind="header"] {
-    color: #d6c27a !important;
-    opacity: 1 !important;
-}
-
-button[kind="header"] *,
-button[kind="header"] svg,
-button[kind="header"] svg path {
-    color: #d6c27a !important;
-    fill: #d6c27a !important;
-    stroke: #d6c27a !important;
-    opacity: 1 !important;
-}
-
-.weather-option-card::after,
-.today-fit-signal::after,
-.signal-card::before,
-.hero-side::after,
-.weather-layout::after,
-.info-grid::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Final bottom spacing fix */
-
-html,
-body,
-.stApp,
-[data-testid="stAppViewContainer"],
-[data-testid="stMain"],
-[data-testid="stMainBlockContainer"] {
-    background: #05070b !important;
-}
-
-.block-container,
-[data-testid="stMainBlockContainer"] {
-    padding-bottom: 11rem !important;
-    overflow: visible !important;
-}
-
-.weather-fit-shell,
-.editorial-shell,
-.main-shell,
-.app-shell,
-.content-shell {
-    padding-bottom: 2rem !important;
-    overflow: visible !important;
-}
-
-.hero-section,
-.hero-grid,
-.info-grid,
-.lower-card-grid,
-.chat-section {
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-}
-
-.info-grid {
-    margin-top: 1.25rem !important;
-    margin-bottom: 1.25rem !important;
-}
-
-.try-box {
-    margin-top: 1.25rem !important;
-    margin-bottom: 2rem !important;
-}
-
-.chat-section,
-.chat-history,
-.message-list {
-    padding-bottom: 6rem !important;
-    margin-bottom: 5rem !important;
-}
-
-.bottom-safe-space {
-    height: 120px !important;
-    width: 100%;
-}
-
-[data-testid="stBottomBlockContainer"] {
-    background: #05070b !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding: 0.9rem 0 1rem !important;
-    box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.45) !important;
-}
-
-[data-testid="stBottomBlockContainer"] > div {
-    max-width: 1180px !important;
-    margin: 0 auto !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-}
-
-[data-testid="stChatInput"] {
-    background: transparent !important;
-    z-index: 999 !important;
-}
-
-[data-testid="stChatInput"] textarea,
-[data-testid="stChatInput"] input {
-    background: #f4f0e8 !important;
-    color: #111111 !important;
-}
-
-/* =========================================================
-   ULTIMATE OVERRIDE: visible real Streamlit sidebar arrow
-   ========================================================= */
-
+/* ── Sidebar toggle button ── */
 [data-testid="collapsedControl"],
 [data-testid="collapsedControl"] button,
 [data-testid="stSidebarCollapsedControl"],
@@ -996,91 +668,116 @@ button[title="Toggle sidebar"] {
     opacity: 1 !important;
     align-items: center !important;
     justify-content: center !important;
-    min-width: 42px !important;
-    min-height: 42px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
     padding: 0 !important;
-    color: #050505 !important;
-    background: #d6c27a !important;
-    border: 1px solid #f4f1ea !important;
+    background: var(--gold) !important;
+    border: none !important;
     border-radius: 999px !important;
-    box-shadow:
-        0 0 0 1px rgba(244, 241, 234, 0.28),
-        0 0 22px rgba(214, 194, 122, 0.82),
-        0 14px 34px rgba(0, 0, 0, 0.55) !important;
+    box-shadow: 0 4px 16px rgba(200, 169, 110, 0.4) !important;
     z-index: 999999 !important;
 }
 
-[data-testid="collapsedControl"] *,
-[data-testid="collapsedControl"] button *,
-[data-testid="stSidebarCollapsedControl"] *,
-[data-testid="stSidebarCollapsedControl"] button *,
-[data-testid="stSidebarCollapseButton"] *,
-[data-testid="stSidebarCollapseButton"] button *,
-button[aria-label="Open sidebar"] *,
-button[aria-label="Close sidebar"] *,
-button[aria-label="Toggle sidebar"] *,
-button[title="Open sidebar"] *,
-button[title="Close sidebar"] *,
-button[title="Toggle sidebar"] * {
-    color: #050505 !important;
-    fill: #050505 !important;
-    stroke: #050505 !important;
-    opacity: 1 !important;
-    font-size: 1.35rem !important;
-    font-weight: 950 !important;
-    line-height: 1 !important;
-    text-shadow: none !important;
-}
-
-[data-testid="collapsedControl"] svg,
 [data-testid="collapsedControl"] svg path,
-[data-testid="collapsedControl"] button svg,
 [data-testid="collapsedControl"] button svg path,
-[data-testid="stSidebarCollapsedControl"] svg,
 [data-testid="stSidebarCollapsedControl"] svg path,
-[data-testid="stSidebarCollapsedControl"] button svg,
 [data-testid="stSidebarCollapsedControl"] button svg path,
-[data-testid="stSidebarCollapseButton"] svg,
 [data-testid="stSidebarCollapseButton"] svg path,
-[data-testid="stSidebarCollapseButton"] button svg,
 [data-testid="stSidebarCollapseButton"] button svg path,
-button[aria-label="Open sidebar"] svg,
 button[aria-label="Open sidebar"] svg path,
-button[aria-label="Close sidebar"] svg,
 button[aria-label="Close sidebar"] svg path,
-button[aria-label="Toggle sidebar"] svg,
 button[aria-label="Toggle sidebar"] svg path,
-button[title="Open sidebar"] svg,
 button[title="Open sidebar"] svg path,
-button[title="Close sidebar"] svg,
 button[title="Close sidebar"] svg path,
-button[title="Toggle sidebar"] svg,
 button[title="Toggle sidebar"] svg path {
-    width: 24px !important;
-    height: 24px !important;
-    color: #050505 !important;
-    fill: #050505 !important;
-    stroke: #050505 !important;
+    fill: var(--black) !important;
+    stroke: var(--black) !important;
     opacity: 1 !important;
-    stroke-width: 3px !important;
 }
 
-[data-testid="collapsedControl"]:hover,
-[data-testid="collapsedControl"] button:hover,
-[data-testid="stSidebarCollapsedControl"]:hover,
-[data-testid="stSidebarCollapsedControl"] button:hover,
-[data-testid="stSidebarCollapseButton"]:hover,
-[data-testid="stSidebarCollapseButton"] button:hover,
-button[aria-label="Open sidebar"]:hover,
-button[aria-label="Close sidebar"]:hover,
-button[aria-label="Toggle sidebar"]:hover,
-button[title="Open sidebar"]:hover,
-button[title="Close sidebar"]:hover,
-button[title="Toggle sidebar"]:hover {
-    background: #f4f1ea !important;
-    border-color: #d6c27a !important;
-    box-shadow:
-        0 0 0 1px rgba(214, 194, 122, 0.42),
-        0 0 28px rgba(244, 241, 234, 0.78),
-        0 16px 38px rgba(0, 0, 0, 0.58) !important;
+/* ── Chat input ── */
+[data-testid="stBottomBlockContainer"] {
+    background: var(--panel) !important;
+    border-top: 1px solid var(--ivory-dim) !important;
+    padding: 0.85rem 0 0.9rem !important;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-testid="stBottomBlockContainer"] > div {
+    max-width: 1180px !important;
+    margin: 0 auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+div[data-testid="stChatInput"] {
+    background: transparent !important;
+    z-index: 999 !important;
+}
+
+div[data-testid="stChatInput"] > div {
+    background: rgba(240, 235, 224, 0.06) !important;
+    border: 1px solid var(--ivory-dim) !important;
+    border-radius: 8px !important;
+    transition: border-color 0.18s;
+}
+
+div[data-testid="stChatInput"] > div:focus-within {
+    border-color: var(--gold) !important;
+}
+
+div[data-testid="stChatInput"] textarea,
+[data-testid="stChatInput"] textarea,
+[data-testid="stChatInput"] input {
+    color: var(--ivory) !important;
+    background: transparent !important;
+    caret-color: var(--ivory) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+}
+
+div[data-testid="stChatInput"] textarea::placeholder {
+    color: var(--ivory-muted) !important;
+}
+
+div[data-testid="stChatInput"] button {
+    background: var(--gold) !important;
+    color: var(--black) !important;
+    border-radius: 6px !important;
+}
+
+/* ── Streamlit misc ── */
+.stMarkdown { color: var(--ivory); }
+.stMarkdown p, .stMarkdown li { color: var(--ivory); line-height: 1.8; }
+div[data-testid="stAlert"], .stAlert { border-radius: 8px !important; }
+.stSpinner > div { color: var(--gold) !important; }
+button { border-radius: 8px !important; }
+
+button[kind="header"] { color: var(--ivory) !important; opacity: 1 !important; }
+button[kind="header"] svg,
+button[kind="header"] svg path {
+    fill: var(--ivory) !important;
+    stroke: var(--ivory) !important;
+    opacity: 1 !important;
+}
+
+.bottom-safe-space {
+    height: 100px !important;
+    width: 100%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .hero-main {
+        grid-template-columns: 1fr;
+        padding: 32px 20px;
+    }
+    .hero-nav-center { display: none; }
+    .hero-right { display: none; }
+    .user-question-card { max-width: 100%; }
+    .weather-answer-card { max-width: 100%; }
+    .weather-avatar-card { min-height: 90px; }
+    .user-question-wrap { margin-right: 1rem; }
+    .try-box { margin-left: 1rem; margin-right: 1rem; }
 }

@@ -1,49 +1,52 @@
-# Claude Code Project Instructions
+## Workflow Orchestration
 
-## 1. 기본 응답 규칙
+### 1. Plan Node Default
+- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
+- If something goes sideways, STOP and re-plan immediately - don't keep pushing
+- Use plan mode for verification steps, not just building
+- Write detailed specs upfront to reduce ambiguity
 
-- 모든 설명은 한국어로 작성한다.
-- 초보자도 이해할 수 있게 단계별로 설명한다.
-- 어려운 용어가 나오면 쉬운 비유와 함께 설명한다.
-- 명령어를 알려줄 때는 명령어의 의미도 함께 설명한다.
+### 2. Subagent Strategy
+- Use subagents liberally to keep main context window clean
+- Offload research, exploration, and parallel analysis to subagents
+- For complex problems, throw more compute at it via subagents
+- One tack per subagent for focused execution
 
-## 2. 코드 수정 규칙
+### 3. Self-Improvement Loop
+- After ANY correction from the user: update `tasks/lessons.md` with the pattern
+- Write rules for yourself that prevent the same mistake
+- Ruthlessly iterate on these lessons until mistake rate drops
+- Review lessons at session start for relevant project
 
-- 파일을 수정하기 전에 어떤 파일을 왜 수정하는지 먼저 설명한다.
-- 기존 코드 구조를 최대한 유지한다.
-- 불필요하게 복잡한 구조로 바꾸지 않는다.
-- 한 번에 너무 많은 파일을 수정하지 않는다.
-- 수정 후에는 실행 방법과 확인 방법을 알려준다.
+### 4. Verification Before Done
+- Never mark a task complete without proving it works
+- Diff behavior between main and your changes when relevant
+- Ask yourself: "Would a staff engineer approve this?"
+- Run tests, check logs, demonstrate correctness
 
-## 3. Git 규칙
+### 5. Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes - don't over-engineer
+- Challenge your own work before presenting it
 
-- 작업 전 `git status`로 현재 상태를 확인한다.
-- main 브랜치는 안정 버전으로 유지한다.
-- 커밋 메시지는 변경 내용을 알 수 있게 작성한다.
-- push 전에 변경된 파일 목록을 설명한다.
+### 6. Autonomous Bug Fixing
+- When given a bug report: just fix it. Don't ask for hand-holding
+- Point at logs, errors, failing tests - then resolve them
+- Zero context switching required from the user
+- Go fix failing CI tests without being told how
 
-## 4. 보안 규칙
+## Task Management
 
-- `.env` 파일은 절대 공개하지 않는다.
-- API 키, 비밀번호, 토큰은 출력하지 않는다.
-- 중요한 파일 삭제 전에는 반드시 사용자에게 확인한다.
+1. **Plan First**: Write plan to `tasks/todo.md` with checkable items
+2. **Verify Plan**: Check in before starting implementation
+3. **Track Progress**: Mark items complete as you go
+4. **Explain Changes**: High-level summary at each step
+5. **Document Results**: Add review section to `tasks/todo.md`
+6. **Capture Lessons**: Update `tasks/lessons.md` after corrections
 
-## 5. README 작성 규칙
+## Core Principles
 
-README.md를 작성하거나 수정할 때는 아래 내용을 포함한다.
-
-- 프로젝트 소개
-- 주요 기능
-- 기술 스택
-- 폴더 구조
-- 설치 방법
-- 실행 방법
-- 사용 방법
-- 트러블슈팅
-- 향후 개선 방향
-
-## 6. 이 프로젝트에서 원하는 작업 방식
-
-- 먼저 분석하고, 그다음 수정한다.
-- 초보자가 공부할 수 있도록 코드 흐름을 설명한다.
-- 과제나 포트폴리오에 사용할 수 있게 깔끔하게 정리한다.
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimat Impact**: Changes should only touch what's necessary. Avoid introducing bugs.

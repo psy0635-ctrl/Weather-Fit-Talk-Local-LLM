@@ -123,98 +123,94 @@ def render_hero(
     use_web_search: bool,
 ) -> None:
     """상단 히어로 영역과 현재 설정 요약을 출력합니다."""
-    weather_accent_map = {
-        "맑음": ("#f2c94c", "SUNNY"),
-        "비": ("#5aa9e6", "RAIN"),
-        "눈": ("#9adcf7", "SNOW"),
-        "흐림": ("#a8adb7", "CLOUDY"),
-        "안개": ("#c8c8bd", "FOG"),
-        "미세먼지": ("#c9b18a", "DUST"),
-        "폭염": ("#ff8a3d", "HEAT"),
-        "추위": ("#82d8d8", "COLD"),
-        "일교차 큼": ("#d6c27a", "TEMP SHIFT"),
-    }
-    weather_accent, weather_badge = weather_accent_map.get(weather_condition, ("#d6c27a", "WEATHER"))
     web_search_status = "ON" if use_web_search else "OFF"
 
-    accent_style = f"<style>:root {{ --hero-accent: {weather_accent}; --hero-accent-muted: {weather_accent}33; }}</style>"
-
     hero_html = f"""
-    <div class="canvas">
-        <div class="inner">
-            <div class="nav">
-                <div class="brand">
-                    <div class="brand-symbol"></div>
-                    <div>WEATHER FIT TALK</div>
-                </div>
+<div class="hero-nav">
+    <div class="hero-nav-left">
+        <span class="hero-nav-dot"></span>
+        <span class="hero-nav-title">WEATHER FIT TALK</span>
+    </div>
+    <div class="hero-nav-center">MAY &middot; 24 &middot; 2026 &middot; SEOUL &middot; LOCAL MODEL</div>
+    <div class="hero-nav-right">
+        <span class="hero-nav-green-dot"></span>
+        LOCAL MODEL ACTIVE
+    </div>
+</div>
+<div class="hero-caption-bar">
+    VOL. 04 &times; WEATHER SERVICE &times; FASHION EDITORIAL &times; LOCAL LLM
+</div>
+<div class="hero-main">
+    <div class="hero-left">
+        <div class="hero-headline">
+            <span class="hero-line-white">WEATHER</span>
+            <div class="hero-line-row">
+                <span class="hero-line-gold">FIT</span>
+                <span class="hero-line-italic">talk.</span>
             </div>
-            <div class="hero">
-                <div class="hero-left">
-                    <div>
-                        <div class="kicker">WEATHER SERVICE × FASHION EDITORIAL × LOCAL LLM</div>
-                        <div class="title">WEATHER<br><span class="title-mark">FIT</span> TALK</div>
-                        <div class="desc">
-                            날씨, 기온, 바람, 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 AI 스타일리스트
-                        </div>
-                        <div class="concept-row">
-                            <div class="concept-pill">TODAY: {html.escape(weather_condition)}</div>
-                            <div class="concept-pill">STYLE: {html.escape(style)}</div>
-                            <div class="concept-pill">LOCAL MODEL: GEMMA4:E4B</div>
-                        </div>
-                        <div class="start-note"><span></span>ASK THE WEATHER STYLIST BELOW</div>
-                    </div>
-                </div>
-                <div class="right-stack">
-                    <div class="character-card">
-                        <div class="character-label">AI WEATHER STYLIST</div>
-                        <div class="weather-icon">
-                            <div class="sun"></div>
-                            <div class="cloud"></div>
-                            <div class="rain"></div>
-                        </div>
-                        <div class="character-name">WEATHER STYLIST</div>
-                        <div class="character-desc">
-                            패션 에디터처럼 무드를 잡고, 날씨 비서처럼 현실적인 착용감을 챙깁니다.
-                        </div>
-                    </div>
-                    <div class="option-card">
-                        <div class="option-heading">
-                            <div class="option-title">TODAY WEATHER OPTION</div>
-                            <div class="weather-badge">{html.escape(weather_badge)}</div>
-                        </div>
-                        <div class="option-list">
-                            <div><span>지역</span><b>{html.escape(location)}</b></div>
-                            <div><span>날씨</span><b>{html.escape(weather_condition)}</b></div>
-                            <div><span>기온</span><b>{html.escape(temperature_range)}</b></div>
-                            <div><span>바람</span><b>{html.escape(wind_level)}</b></div>
-                            <div><span>상황</span><b>{html.escape(situation)}</b></div>
-                            <div><span>스타일</span><b>{html.escape(style)}</b></div>
-                            <div><span>웹 검색</span><b>{html.escape(web_search_status)}</b></div>
-                            <div><span>검색 엔진</span><b>DuckDuckGo</b></div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <p class="hero-body">날씨, 기온, 바람, 상황을 종합 분석해 오늘 입기 좋은 코디를 추천하는 로컬 LLM 기반 AI 스타일리스트. 모든 추론은 당신의 머신 안에서.</p>
+        <div class="hero-tags">
+            <span class="hero-tag">TODAY {html.escape(weather_condition)} &middot; {html.escape(temperature_range)}</span>
+            <span class="hero-tag">SCENE {html.escape(situation)}</span>
+            <span class="hero-tag">STYLE {html.escape(style)}</span>
+            <span class="hero-tag">MODEL gemma4:e4b</span>
+        </div>
+        <div class="hero-cta">
+            <span class="hero-cta-line"></span>
+            <span class="hero-cta-text">&mdash; ASK THE WEATHER STYLIST BELOW</span>
+        </div>
+    </div>
+    <div class="hero-right">
+        <div class="hero-card">
+            <div class="hero-card-label">&mdash; AI WEATHER STYLIST</div>
+            <div class="hero-weather-icon"></div>
+            <div class="hero-stylist-name">WEATHER STYLIST</div>
+            <p class="hero-stylist-desc">패션 에디터처럼 무드를 잡고, 날씨 비서처럼 현실적인 착용감을 챙깁니다. 8-레이어 프롬프트로 구성된 코디 큐레이션.</p>
+            <div class="hero-stylist-vol">NO. 04 / SS26</div>
+        </div>
+        <div class="hero-card" style="margin-top:16px">
+            <div class="hero-card-label">TODAY WEATHER OPTION</div>
+            <div class="hero-option-row">
+                <span class="hero-option-label">지역</span>
+                <span class="hero-option-value">{html.escape(location)}</span>
             </div>
-            <div class="info-grid">
-                <div class="info-card">
-                    <div class="info-title">WHAT IS WEATHER FIT?</div>
-                    <div class="info-text">
-                        WEATHER FIT TALK는 날씨와 사용자의 상황을 바탕으로 오늘 입기 좋은 옷차림을 추천하는 로컬 LLM 기반 AI 챗봇입니다.
-                    </div>
-                </div>
-                <div class="info-card">
-                    <div class="info-title">TODAY FIT SIGNAL</div>
-                    <div class="mini-metric">
-                        <div><span>MOOD</span><b>{html.escape(style)}</b></div>
-                        <div><span>WEATHER</span><b>{html.escape(weather_condition)}</b></div>
-                        <div><span>SCENE</span><b>{html.escape(situation)}</b></div>
-                    </div>
-                </div>
+            <div class="hero-option-row">
+                <span class="hero-option-label">날씨</span>
+                <span class="hero-option-value">{html.escape(weather_condition)}</span>
+            </div>
+            <div class="hero-option-row">
+                <span class="hero-option-label">기온</span>
+                <span class="hero-option-value">{html.escape(temperature_range)}</span>
+            </div>
+            <div class="hero-option-row">
+                <span class="hero-option-label">바람</span>
+                <span class="hero-option-value">{html.escape(wind_level)}</span>
+            </div>
+            <div class="hero-option-row">
+                <span class="hero-option-label">상황</span>
+                <span class="hero-option-value">{html.escape(situation)}</span>
+            </div>
+            <div class="hero-option-row">
+                <span class="hero-option-label">스타일</span>
+                <span class="hero-option-value">{html.escape(style)}</span>
+            </div>
+            <div class="hero-option-row">
+                <span class="hero-option-label">웹 검색</span>
+                <span class="hero-option-value">{html.escape(web_search_status)}</span>
             </div>
         </div>
     </div>
-    """
-    st.markdown(accent_style + hero_html, unsafe_allow_html=True)
+</div>
+<div class="hero-ticker-wrap">
+    <div class="hero-ticker-track">
+        <span class="hero-ticker-text">NO KEY &#10022; RUNS ON YOUR MACHINE &#10022; WEATHER &times; FASHION &times; LLM &#10022; </span>
+        <span class="hero-ticker-text">NO KEY &#10022; RUNS ON YOUR MACHINE &#10022; WEATHER &times; FASHION &times; LLM &#10022; </span>
+        <span class="hero-ticker-text">NO KEY &#10022; RUNS ON YOUR MACHINE &#10022; WEATHER &times; FASHION &times; LLM &#10022; </span>
+        <span class="hero-ticker-text">NO KEY &#10022; RUNS ON YOUR MACHINE &#10022; WEATHER &times; FASHION &times; LLM &#10022; </span>
+    </div>
+</div>"""
+    st.markdown(hero_html, unsafe_allow_html=True)
 
 
 def render_user_message(content: str) -> None:
@@ -224,7 +220,7 @@ def render_user_message(content: str) -> None:
         f"""
         <div class="user-question-wrap">
             <div class="user-question-card">
-                <div class="user-question-label">USER WEATHER REQUEST</div>
+                <div class="user-question-label">USER REQUEST</div>
                 <div class="user-question-text">{safe}</div>
             </div>
         </div>
@@ -237,16 +233,13 @@ def render_ai_message(content: str) -> None:
     """AI 답변을 아바타와 함께 출력합니다."""
     cleaned = clean_text(content)
     safe_answer = html.escape(cleaned).replace("\n\n", "<br><br>").replace("\n", "<br>")
-    avatar_col, answer_col = st.columns([0.16, 0.84])
+    avatar_col, answer_col = st.columns([0.14, 0.86])
 
     with avatar_col:
         st.markdown(
             """
             <div class="weather-avatar-card">
-                <div class="weather-mini-icon">
-                    <div class="mini-cloud"></div>
-                    <div class="mini-rain"></div>
-                </div>
+                <div class="weather-avatar-icon"></div>
                 <div class="mini-name">WEATHER<br>STYLIST</div>
             </div>
             """,
@@ -257,7 +250,7 @@ def render_ai_message(content: str) -> None:
         st.markdown(
             f"""
             <div class="weather-answer-card">
-                <div class="weather-answer-label">WEATHER STYLIST TALKING</div>
+                <div class="weather-answer-label">WEATHER STYLIST</div>
                 <div class="weather-answer-text">{safe_answer}</div>
             </div>
             """,
@@ -270,7 +263,7 @@ def render_try_prompt() -> None:
     st.markdown(
         """
         <div class="try-box">
-            <div class="try-title">TRY THIS PROMPT</div>
+            <div class="try-title">01 &middot; TRY THIS PROMPT</div>
             <div class="try-text">
                 오늘 비 오고 바람도 좀 불어. 등교 갈 때 춥지 않으면서 깔끔하게 입고 싶어.
             </div>
@@ -304,7 +297,7 @@ st.sidebar.markdown("---")
 
 model_name = st.sidebar.selectbox(
     "Local LLM Model",
-    ["gemma4:e4b", "gemma3:4b", "gemma3:1b"],
+    LLM_MODEL_OPTIONS,
 )
 
 st.sidebar.markdown("### 🌐 WEB SEARCH")
@@ -361,13 +354,20 @@ color_preference = st.sidebar.selectbox(
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
-    f"""
+    """
     <div class="sidebar-meta">
-        <b>Project</b>: Weather Fit Talk<br>
-        <b>Local LLM</b>: Ollama + {DEFAULT_LLM_MODEL}<br>
-        <b>API Key</b>: 사용하지 않음<br>
-        <b>Cost</b>: API 비용 없음<br>
-        <b>Topic</b>: 날씨 기반 코디 추천
+        <div class="sidebar-meta-row">
+            <span class="sidebar-meta-label">PROJECT</span>
+            <span class="sidebar-meta-value">WEATHER FIT TALK</span>
+        </div>
+        <div class="sidebar-meta-row">
+            <span class="sidebar-meta-label">RUNTIME</span>
+            <span class="sidebar-meta-value">OLLAMA &middot; LOCAL</span>
+        </div>
+        <div class="sidebar-meta-row">
+            <span class="sidebar-meta-label">BUILD</span>
+            <span class="sidebar-meta-value">PARK &middot; SY</span>
+        </div>
     </div>
     """,
     unsafe_allow_html=True,
