@@ -18,7 +18,7 @@ def infer_weather_from_user_input(user_input: str) -> dict:
         inferred["temperature_range"] = "31도 이상" if contains_any(text, ["무더워", "폭염", "땀", "너무더워"]) else "26~30도"
         notes.append("더운 날씨 표현")
 
-    if contains_any(text, ["춥다", "추워", "추움", "쌀쌀", "한파", "겨울", "바람차다", "패딩", "코트"]):
+    elif contains_any(text, ["춥다", "추워", "추움", "쌀쌀", "한파", "겨울", "바람차다"]):
         inferred["temperature_range"] = "영하" if contains_any(text, ["한파", "영하", "너무추워"]) else "0~5도"
         notes.append("추운 날씨 표현")
 
@@ -169,7 +169,6 @@ def build_style_keywords(style: str, color_preference: str) -> str:
         "깔끔한 스타일": ["단정한 니트", "셔츠", "슬랙스", "정돈된 색 조합", "과하지 않은 코디"],
         "힙한 스타일": ["와이드 팬츠", "레이어드", "포인트 액세서리", "개성 있는 실루엣", "스트릿 감성"],
         "편한 스타일": ["스웨트셔츠", "조거팬츠", "편한 스니커즈", "활동성", "부드러운 소재"],
-        "러블리": ["부드러운 색감", "니트", "스커트", "작은 포인트", "따뜻한 분위기"],
     }
 
     color_map = {
