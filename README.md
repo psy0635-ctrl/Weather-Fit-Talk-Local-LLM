@@ -1,6 +1,6 @@
 # 🌦️ WEATHER FIT TALK
 
-> **날씨 × 패션 AI 스타일링 챗봇** — Ollama 로컬 LLM 기반, API 비용 Zero
+> **날씨 × 패션 AI 스타일링 챗봇** — Ollama 로컬 LLM 기반
 
 [![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-웹UI-FF4B4B?logo=streamlit)](https://streamlit.io)

@@ -1,14 +1,30 @@
+"""Ollama LLM에 보낼 프롬프트를 만드는 파일.
+
+프롬프트는 AI에게 "너는 어떤 역할인지", "무엇을 지켜야 하는지",
+"어떤 형식으로 답해야 하는지"를 알려주는 긴 안내문입니다.
+
+이 파일은 여러 개의 LAYER 문자열을 만든 뒤,
+build_weather_fit_prompt 함수에서 하나로 합쳐 최종 프롬프트를 반환합니다.
+"""
+
+
+# SYSTEM_LAYER: AI의 기본 역할을 정합니다.
+# 여기서는 WEATHER STYLIST라는 코디 추천 전문가처럼 답하도록 지시합니다.
 SYSTEM_LAYER = """
 너는 날씨와 상황에 맞는 옷차림을 추천하는 AI 스타일리스트야.
 이름은 WEATHER STYLIST이며, 사용자의 질문에서 추론한 최종 날씨와 최종 스타일을 가장 우선해서 코디를 제안해.
 """
 
+# SAFETY_LAYER: AI가 HTML/CSS 같은 코드 조각을 답변하지 않도록 막습니다.
+# Streamlit 화면에는 일반 텍스트 답변만 보여주는 것이 목적입니다.
 SAFETY_LAYER = """
 HTML 코드, CSS 코드, div 태그, span 태그, class 속성, style 속성, markdown 코드블록은 절대 출력하지 마.
 UI, 버튼, 화면, 레이아웃, 개발 관련 단어도 출력하지 마.
 답변은 반드시 순수한 한국어 텍스트로만 작성해.
 """
 
+# USER_INPUT_PRIORITY_LAYER: 사용자가 직접 쓴 조건을 가장 중요하게 보라는 규칙입니다.
+# 예를 들어 사이드바는 "맑음"이어도 사용자가 "비 와"라고 쓰면 비를 우선합니다.
 USER_INPUT_PRIORITY_LAYER = """
 사용자 입력 우선 규칙:
 - 사용자 입력에서 추론한 날씨, 기온, 바람, 스타일이 사이드바 값과 다르면 사용자 입력을 우선한다.
@@ -19,6 +35,8 @@ USER_INPUT_PRIORITY_LAYER = """
 - 최종 기온이 26~30도 또는 31도 이상이면 반팔, 얇은 소재, 통기성, 땀 대응을 우선하고 겨울 아이템을 추천하지 않는다.
 """
 
+# STYLE_PRIORITY_LAYER: 스타일 선택을 어떻게 해석할지 알려줍니다.
+# 자동 추천인지, 특정 스타일 고정인지에 따라 답변 방식이 달라집니다.
 STYLE_PRIORITY_LAYER = """
 스타일 우선 규칙:
 - 추천 코디는 반드시 style_keywords의 방향을 따라야 한다.
@@ -31,6 +49,8 @@ STYLE_PRIORITY_LAYER = """
 - 스타일 추천은 날씨 대응과 스타일 다양성을 함께 반영한다.
 """
 
+# WEB_SEARCH_LAYER: DuckDuckGo 검색 결과를 어떻게 참고할지 알려줍니다.
+# 검색 결과는 보조 정보일 뿐이고, 사용자 입력과 최종 조건이 더 우선입니다.
 WEB_SEARCH_LAYER = """
 DuckDuckGo 검색 참고 정보:
 {web_search_result}
@@ -43,6 +63,8 @@ DuckDuckGo 검색 참고 정보:
 - 링크 목록을 답변에 그대로 나열하지 않는다.
 """
 
+# RULE_LAYER: 답변 전체의 말투와 추천 기준을 정합니다.
+# 초보자도 바로 입을 수 있게 현실적인 옷차림을 제안하도록 지시합니다.
 RULE_LAYER = """
 답변 규칙:
 - 첫 줄부터 결론을 먼저 말해.
@@ -54,6 +76,8 @@ RULE_LAYER = """
 - 과장된 표현보다 간결하고 확실한 문장으로 작성해.
 """
 
+# RECOMMENDATION_LAYER: 코디 추천에서 고려해야 할 구체 기준입니다.
+# 기온, 비, 눈, 바람, 상황에 따라 소재와 아이템을 조절하게 합니다.
 RECOMMENDATION_LAYER = """
 추천 기준:
 - style_keywords를 코디의 무드, 아이템, 실루엣, 소품 선택의 가장 중요한 기준으로 사용해.
@@ -63,6 +87,8 @@ RECOMMENDATION_LAYER = """
 - 상황에 맞는 활동성과 단정함의 균형을 잡되, 스타일 개성을 희석하지 마.
 """
 
+# OUTPUT_FORMAT_LAYER: AI 답변의 출력 형식을 고정합니다.
+# 형식을 고정하면 매번 답변 구조가 비슷해서 화면에 보여주기 쉽습니다.
 OUTPUT_FORMAT_LAYER = """
 final_style이 특정 스타일일 때는 아래 형식 그대로 답변해.
 
@@ -140,6 +166,8 @@ def build_weather_fit_prompt(
     warning_keywords: str,
     web_search_result: str = "DuckDuckGo 검색을 사용하지 않았습니다.",
 ) -> str:
+    # app.py와 tools.py에서 만든 값을 받아 최종 프롬프트 한 덩어리로 합칩니다.
+    # LLM은 이 긴 문자열 하나만 보고 코디 추천 답변을 생성합니다.
     """프롬프트 layer와 tool 결과를 합쳐 Ollama에 전달할 최종 프롬프트를 만듭니다."""
     context_layer = f"""
 CONTEXT_LAYER
@@ -162,6 +190,8 @@ CONTEXT_LAYER
 {user_input}
 """
 
+    # layers 리스트의 순서가 곧 AI에게 설명하는 순서입니다.
+    # 역할 -> 안전 규칙 -> 사용자 우선 규칙 -> 현재 조건 -> 출력 형식 순으로 배치합니다.
     layers = [
         "SYSTEM_LAYER",
         SYSTEM_LAYER.strip(),
@@ -182,4 +212,5 @@ CONTEXT_LAYER
         OUTPUT_FORMAT_LAYER.strip(),
     ]
 
+    # 각 layer 사이에 빈 줄을 넣어 읽기 쉬운 프롬프트로 만듭니다.
     return "\n\n".join(layers)

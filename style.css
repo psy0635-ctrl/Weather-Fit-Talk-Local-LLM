@@ -3,6 +3,23 @@
    Dark × Gold × Ivory
 ============================== */
 
+/* 
+   이 파일은 Streamlit 기본 화면을 WEATHER FIT TALK 스타일로 바꾸는 CSS입니다.
+   CSS를 처음 보는 경우에는 아래 순서로 읽으면 좋습니다.
+   1. :root 색상 변수
+   2. 전체 배경과 기본 레이아웃
+   3. 상단 hero 영역
+   4. 채팅 메시지 카드
+   5. 사이드바와 입력창
+   6. 모바일 반응형 설정
+
+   !important가 많이 붙어 있는 이유:
+   Streamlit이 자체 CSS를 강하게 적용하기 때문에, 여기서 만든 스타일이 밀리지 않게
+   우선순위를 높여 주기 위해 사용합니다.
+*/
+
+/* 자주 쓰는 색상은 변수로 저장합니다.
+   예: var(--gold)를 쓰면 #C8A96E 색상이 적용됩니다. */
 :root {
     --bg:          #0E0E10;
     --panel:       #111113;
@@ -24,6 +41,7 @@ html, body {
     overflow-y: auto !important;
 }
 
+/* Base: 페이지 전체 배경, 글자색, 스크롤 방식을 정합니다. */
 html, body,
 .stApp,
 [data-testid="stAppViewContainer"],
@@ -57,6 +75,7 @@ header[data-testid="stHeader"] {
     background: var(--bg) !important;
 }
 
+/* Block container: Streamlit 본문 영역의 기본 여백을 제거해 전체 화면처럼 보이게 합니다. */
 main,
 [data-testid="stAppViewContainer"],
 [data-testid="stMain"] {
@@ -66,6 +85,7 @@ main,
 }
 
 /* ── Hero Nav ── */
+/* Hero Nav: 화면 맨 위의 작은 네비게이션 바입니다. */
 .hero-nav {
     background: var(--panel);
     border-bottom: 1px solid var(--ivory-dim);
@@ -128,6 +148,7 @@ main,
 }
 
 /* ── Hero Caption Bar ── */
+/* Hero Caption Bar: 네비게이션 아래에 있는 얇은 설명 바입니다. */
 .hero-caption-bar {
     background: var(--bg);
     border-bottom: 1px solid var(--ivory-dim);
@@ -140,6 +161,7 @@ main,
 }
 
 /* ── Hero Main ── */
+/* Hero Main: 앱 첫 화면의 큰 제목과 오른쪽 요약 카드를 배치합니다. */
 .hero-main {
     background: var(--bg);
     padding: 48px 32px;
@@ -150,6 +172,7 @@ main,
 }
 
 /* ── Hero Left ── */
+/* Hero Left: WEATHER FIT talk. 큰 타이포그래피 영역입니다. */
 .hero-headline {
     line-height: 0.90;
     letter-spacing: -0.03em;
@@ -241,6 +264,7 @@ main,
 }
 
 /* ── Hero Right ── */
+/* Hero Right: 현재 선택한 날씨/상황 옵션을 카드로 보여주는 영역입니다. */
 .hero-card {
     background: rgba(240, 235, 224, 0.06);
     border: 1px solid var(--ivory-dim);
@@ -343,6 +367,7 @@ main,
 }
 
 /* ── Hero Ticker ── */
+/* Hero Ticker: 가로로 흐르는 안내 문구 애니메이션입니다. */
 .hero-ticker-wrap {
     background: var(--panel);
     border-top: 1px solid var(--ivory-dim);
@@ -372,6 +397,7 @@ main,
 }
 
 /* ── User message ── */
+/* User message: 사용자가 입력한 메시지를 오른쪽 카드로 보여줍니다. */
 .user-question-wrap {
     display: flex;
     justify-content: flex-end;
@@ -407,6 +433,7 @@ main,
 }
 
 /* ── AI avatar ── */
+/* AI avatar: AI 답변 왼쪽에 붙는 작은 WEATHER STYLIST 카드입니다. */
 .weather-avatar-card {
     background: rgba(240, 235, 224, 0.06);
     border: 1px solid var(--ivory-dim);
@@ -446,6 +473,7 @@ main,
 }
 
 /* ── AI answer card ── */
+/* AI answer card: Ollama가 만든 코디 추천 답변을 담는 카드입니다. */
 .weather-answer-card {
     background: rgba(240, 235, 224, 0.06);
     border: 1px solid var(--ivory-dim);
@@ -489,6 +517,7 @@ main,
 }
 
 /* ── Try prompt ── */
+/* Try prompt: 첫 화면에서 예시 질문을 보여주는 박스입니다. */
 .try-box {
     max-width: 680px;
     margin: 20px 0;
@@ -515,6 +544,7 @@ main,
 }
 
 /* ── Sidebar ── */
+/* Sidebar: 왼쪽 설정 패널의 폭, 배경, 입력창, 버튼 스타일입니다. */
 section[data-testid="stSidebar"] {
     width: 300px !important;
     background: var(--panel) !important;
@@ -573,11 +603,36 @@ section[data-testid="stSidebar"] div[data-baseweb="input"] > div {
     color: var(--ivory) !important;
 }
 
-section[data-testid="stSidebar"] div[data-baseweb="select"] span,
-section[data-testid="stSidebar"] input {
+section[data-testid="stSidebar"] div[data-baseweb="select"] span {
     color: var(--ivory) !important;
     font-size: 13px !important;
     font-weight: 500 !important;
+}
+
+section[data-testid="stSidebar"] input[type="text"],
+section[data-testid="stSidebar"] input {
+  color: #F0EBE0 !important;
+  background: rgba(240,235,224,0.06) !important;
+  border: 1px solid rgba(240,235,224,0.15) !important;
+  border-radius: 6px !important;
+  caret-color: #F0EBE0 !important;
+  -webkit-text-fill-color: #F0EBE0 !important;
+}
+
+section[data-testid="stSidebar"] input::placeholder {
+  color: rgba(240,235,224,0.35) !important;
+  -webkit-text-fill-color: rgba(240,235,224,0.35) !important;
+}
+
+section[data-testid="stSidebar"] input:focus {
+  border-color: #C8A96E !important;
+  outline: none !important;
+}
+
+[data-testid="stTextInput"] input {
+  color: #F0EBE0 !important;
+  caret-color: #F0EBE0 !important;
+  -webkit-text-fill-color: #F0EBE0 !important;
 }
 
 section[data-testid="stSidebar"] .stCheckbox label {
@@ -643,6 +698,7 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 }
 
 /* ── Sidebar visibility ── */
+/* Sidebar visibility: 사이드바가 숨거나 작아졌을 때도 보이도록 보정합니다. */
 [data-testid="stSidebar"],
 section[data-testid="stSidebar"] {
     display: block !important;
@@ -651,6 +707,7 @@ section[data-testid="stSidebar"] {
 }
 
 /* ── Sidebar toggle button ── */
+/* Sidebar toggle button: 사이드바 열기/닫기 버튼이 잘 보이도록 색을 강제로 지정합니다. */
 [data-testid="collapsedControl"],
 [data-testid="collapsedControl"] button,
 [data-testid="stSidebarCollapsedControl"],
@@ -658,96 +715,75 @@ section[data-testid="stSidebar"] {
 [data-testid="stSidebarCollapseButton"],
 [data-testid="stSidebarCollapseButton"] button,
 button[aria-label="Open sidebar"],
-button[aria-label="Close sidebar"],
-button[aria-label="Toggle sidebar"],
-button[title="Open sidebar"],
-button[title="Close sidebar"],
-button[title="Toggle sidebar"] {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    padding: 0 !important;
-    background: var(--gold) !important;
-    border: none !important;
-    border-radius: 999px !important;
-    box-shadow: 0 4px 16px rgba(200, 169, 110, 0.4) !important;
-    z-index: 999999 !important;
+button[aria-label="Close sidebar"] {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: #C8A96E !important;
+  border: 2px solid #C8A96E !important;
+  border-radius: 999px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow:
+    0 0 0 3px rgba(200,169,110,0.25),
+    0 4px 16px rgba(0,0,0,0.5) !important;
+  z-index: 999999 !important;
+  cursor: pointer !important;
 }
 
 [data-testid="collapsedControl"] svg path,
-[data-testid="collapsedControl"] button svg path,
 [data-testid="stSidebarCollapsedControl"] svg path,
-[data-testid="stSidebarCollapsedControl"] button svg path,
 [data-testid="stSidebarCollapseButton"] svg path,
-[data-testid="stSidebarCollapseButton"] button svg path,
 button[aria-label="Open sidebar"] svg path,
-button[aria-label="Close sidebar"] svg path,
-button[aria-label="Toggle sidebar"] svg path,
-button[title="Open sidebar"] svg path,
-button[title="Close sidebar"] svg path,
-button[title="Toggle sidebar"] svg path {
-    fill: var(--black) !important;
-    stroke: var(--black) !important;
-    opacity: 1 !important;
+button[aria-label="Close sidebar"] svg path {
+  fill: #0E0E10 !important;
+  stroke: #0E0E10 !important;
+  opacity: 1 !important;
 }
 
 /* ── Chat input ── */
+/* Chat input: 화면 하단의 채팅 입력창과 전송 버튼 스타일입니다. */
 [data-testid="stBottomBlockContainer"] {
-    background: var(--panel) !important;
-    border-top: 1px solid var(--ivory-dim) !important;
-    padding: 0.85rem 0 0.9rem !important;
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.3) !important;
-}
-
-[data-testid="stBottomBlockContainer"] > div {
-    max-width: 1180px !important;
-    margin: 0 auto !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-}
-
-div[data-testid="stChatInput"] {
-    background: transparent !important;
-    z-index: 999 !important;
+  background: #111113 !important;
+  border-top: 1px solid rgba(240,235,224,0.08) !important;
+  padding: 12px 0 14px !important;
 }
 
 div[data-testid="stChatInput"] > div {
-    background: rgba(240, 235, 224, 0.06) !important;
-    border: 1px solid var(--ivory-dim) !important;
-    border-radius: 8px !important;
-    transition: border-color 0.18s;
+  background: rgba(240,235,224,0.06) !important;
+  border: 1px solid rgba(240,235,224,0.15) !important;
+  border-radius: 10px !important;
 }
 
 div[data-testid="stChatInput"] > div:focus-within {
-    border-color: var(--gold) !important;
+  border-color: #C8A96E !important;
 }
 
 div[data-testid="stChatInput"] textarea,
-[data-testid="stChatInput"] textarea,
-[data-testid="stChatInput"] input {
-    color: var(--ivory) !important;
-    background: transparent !important;
-    caret-color: var(--ivory) !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    line-height: 1.5 !important;
+div[data-testid="stChatInput"] textarea:focus,
+[data-testid="stChatInput"] textarea {
+  color: #F0EBE0 !important;
+  caret-color: #F0EBE0 !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  -webkit-text-fill-color: #F0EBE0 !important;
 }
 
 div[data-testid="stChatInput"] textarea::placeholder {
-    color: var(--ivory-muted) !important;
+  color: rgba(240,235,224,0.30) !important;
+  -webkit-text-fill-color: rgba(240,235,224,0.30) !important;
 }
 
 div[data-testid="stChatInput"] button {
-    background: var(--gold) !important;
-    color: var(--black) !important;
-    border-radius: 6px !important;
+  background: #C8A96E !important;
+  color: #0E0E10 !important;
+  border-radius: 6px !important;
 }
 
 /* ── Streamlit misc ── */
+/* Streamlit misc: 경고창, 스피너, 기본 버튼처럼 자잘한 Streamlit 요소 보정입니다. */
 .stMarkdown { color: var(--ivory); }
 .stMarkdown p, .stMarkdown li { color: var(--ivory); line-height: 1.8; }
 div[data-testid="stAlert"], .stAlert { border-radius: 8px !important; }
@@ -781,3 +817,202 @@ button[kind="header"] svg path {
     .user-question-wrap { margin-right: 1rem; }
     .try-box { margin-left: 1rem; margin-right: 1rem; }
 }
+
+/* ============================================
+   CRITICAL OVERRIDE BLOCK — DO NOT REMOVE
+   Fixes: input text, toggle button, chat input
+   ============================================ */
+
+/* 아래 블록은 Streamlit 버전에 따라 입력창 글자가 안 보이거나
+   사이드바 토글 버튼이 흐려지는 문제를 막기 위한 강제 보정입니다.
+   비슷한 선택자가 반복되어도, Streamlit 내부 구조가 조금씩 달라질 수 있어
+   여러 경우를 한꺼번에 잡도록 작성되어 있습니다. */
+
+/* --- FIX 1: Sidebar text input (지역) --- */
+section[data-testid="stSidebar"] div[data-testid="stTextInput"] input,
+section[data-testid="stSidebar"] input[type="text"],
+section[data-testid="stSidebar"] input[type="search"],
+section[data-testid="stSidebar"] input {
+    color: #F0EBE0 !important;
+    -webkit-text-fill-color: #F0EBE0 !important;
+    background-color: rgba(240, 235, 224, 0.08) !important;
+    border: 1px solid rgba(240, 235, 224, 0.20) !important;
+    caret-color: #F0EBE0 !important;
+    border-radius: 6px !important;
+}
+
+section[data-testid="stSidebar"] input::placeholder,
+section[data-testid="stSidebar"] div[data-testid="stTextInput"] input::placeholder {
+    color: rgba(240, 235, 224, 0.40) !important;
+    -webkit-text-fill-color: rgba(240, 235, 224, 0.40) !important;
+}
+
+section[data-testid="stSidebar"] input:focus {
+    border-color: #C8A96E !important;
+    box-shadow: 0 0 0 2px rgba(200, 169, 110, 0.20) !important;
+}
+
+/* --- FIX 2: Sidebar toggle arrow button --- */
+[data-testid="collapsedControl"] button,
+[data-testid="stSidebarCollapsedControl"] button,
+[data-testid="stSidebarCollapseButton"] button,
+button[aria-label="Open sidebar"],
+button[aria-label="Close sidebar"],
+button[kind="header"] {
+    background: #C8A96E !important;
+    border: 2px solid #C8A96E !important;
+    border-radius: 50% !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 9999999 !important;
+    box-shadow: 0 0 0 4px rgba(200, 169, 110, 0.25),
+                0 4px 20px rgba(0, 0, 0, 0.60) !important;
+}
+
+[data-testid="collapsedControl"] button svg,
+[data-testid="collapsedControl"] button svg *,
+[data-testid="stSidebarCollapsedControl"] button svg,
+[data-testid="stSidebarCollapsedControl"] button svg *,
+[data-testid="stSidebarCollapseButton"] button svg,
+[data-testid="stSidebarCollapseButton"] button svg *,
+button[aria-label="Open sidebar"] svg,
+button[aria-label="Open sidebar"] svg *,
+button[aria-label="Close sidebar"] svg,
+button[aria-label="Close sidebar"] svg * {
+    fill: #0E0E10 !important;
+    stroke: #0E0E10 !important;
+    color: #0E0E10 !important;
+    opacity: 1 !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* --- FIX 3: Chat input text invisible --- */
+[data-testid="stBottomBlockContainer"],
+[data-testid="stBottomBlockContainer"] > div {
+    background: #111113 !important;
+    border-top: 1px solid rgba(240, 235, 224, 0.08) !important;
+}
+
+div[data-testid="stChatInput"],
+div[data-testid="stChatInput"] > div,
+div[data-testid="stChatInput"] > div > div {
+    background: rgba(240, 235, 224, 0.06) !important;
+    border: 1px solid rgba(240, 235, 224, 0.18) !important;
+    border-radius: 10px !important;
+}
+
+div[data-testid="stChatInput"] > div:focus-within {
+    border-color: #C8A96E !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    color: #F0EBE0 !important;
+    -webkit-text-fill-color: #F0EBE0 !important;
+    caret-color: #F0EBE0 !important;
+    background: transparent !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+div[data-testid="stChatInput"] textarea::placeholder {
+    color: rgba(240, 235, 224, 0.30) !important;
+    -webkit-text-fill-color: rgba(240, 235, 224, 0.30) !important;
+}
+
+div[data-testid="stChatInput"] button[data-testid="stChatInputSubmitButton"],
+div[data-testid="stChatInput"] button {
+    background: #C8A96E !important;
+    color: #0E0E10 !important;
+    border-radius: 6px !important;
+    border: none !important;
+}
+
+/* ============================================
+   END CRITICAL OVERRIDE BLOCK
+   ============================================ */
+
+   /* ===== CRITICAL FIX BLOCK ===== */
+
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] input[type="text"] {
+    color: #F0EBE0 !important;
+    -webkit-text-fill-color: #F0EBE0 !important;
+    background-color: rgba(240,235,224,0.08) !important;
+    border: 1px solid rgba(240,235,224,0.20) !important;
+    caret-color: #F0EBE0 !important;
+}
+
+section[data-testid="stSidebar"] input::placeholder {
+    color: rgba(240,235,224,0.40) !important;
+    -webkit-text-fill-color: rgba(240,235,224,0.40) !important;
+}
+
+[data-testid="collapsedControl"] button,
+[data-testid="stSidebarCollapsedControl"] button,
+[data-testid="stSidebarCollapseButton"] button,
+button[aria-label="Open sidebar"],
+button[aria-label="Close sidebar"] {
+    background: #C8A96E !important;
+    border: 2px solid #C8A96E !important;
+    border-radius: 50% !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 9999999 !important;
+    box-shadow: 0 0 0 4px rgba(200,169,110,0.25),
+                0 4px 20px rgba(0,0,0,0.60) !important;
+}
+
+[data-testid="collapsedControl"] button svg *,
+[data-testid="stSidebarCollapsedControl"] button svg *,
+[data-testid="stSidebarCollapseButton"] button svg *,
+button[aria-label="Open sidebar"] svg *,
+button[aria-label="Close sidebar"] svg * {
+    fill: #0E0E10 !important;
+    stroke: #0E0E10 !important;
+    opacity: 1 !important;
+}
+
+[data-testid="stBottomBlockContainer"] {
+    background: #111113 !important;
+    border-top: 1px solid rgba(240,235,224,0.08) !important;
+}
+
+div[data-testid="stChatInput"] > div {
+    background: rgba(240,235,224,0.06) !important;
+    border: 1px solid rgba(240,235,224,0.18) !important;
+    border-radius: 10px !important;
+}
+
+div[data-testid="stChatInput"] > div:focus-within {
+    border-color: #C8A96E !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    color: #F0EBE0 !important;
+    -webkit-text-fill-color: #F0EBE0 !important;
+    caret-color: #F0EBE0 !important;
+    background: transparent !important;
+    font-size: 14px !important;
+}
+
+div[data-testid="stChatInput"] textarea::placeholder {
+    color: rgba(240,235,224,0.30) !important;
+    -webkit-text-fill-color: rgba(240,235,224,0.30) !important;
+}
+
+div[data-testid="stChatInput"] button {
+    background: #C8A96E !important;
+    color: #0E0E10 !important;
+    border-radius: 6px !important;
+}
+
+/* ===== END FIX BLOCK ===== */
