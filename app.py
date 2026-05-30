@@ -32,11 +32,11 @@ import requests
 #            st.sidebar, st.chat_input, st.markdown 등으로 화면 요소를 쉽게 만들 수 있음.
 import streamlit as st
 
-# prompts.py는 LLM에 전달할 긴 프롬프트를 조립하는 역할만 담당합니다.
-from prompts import build_weather_fit_prompt
+# core/prompts.py는 LLM에 전달할 긴 프롬프트를 조립하는 역할만 담당합니다.
+from core.prompts import build_weather_fit_prompt
 
-# tools.py에는 날씨/스타일 추론, 검색, 키워드 생성처럼 재사용 가능한 함수들이 있습니다.
-from tools import (
+# core/tools.py에는 날씨/스타일 추론, 검색, 키워드 생성처럼 재사용 가능한 함수들이 있습니다.
+from core.tools import (
     build_context_summary,
     build_style_keywords,
     build_weather_keywords,
@@ -568,7 +568,7 @@ def build_conversation_history(messages: list[dict[str, str]]) -> str:
 # ──────────────────────────────────────────────────────────────────────────────
 
 # 앱 시작 시 CSS를 먼저 적용합니다.
-load_css("style.css")
+load_css("static/style.css")
 
 # ──────────────────────────────────────────────────────────────────────────────
 # [MutationObserver: DOM 변화 감지 스크립트]
