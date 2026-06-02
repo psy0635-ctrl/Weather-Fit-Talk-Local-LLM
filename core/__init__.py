@@ -10,7 +10,8 @@
     core/
     ├── __init__.py   ← 지금 이 파일 (패키지의 대문)
     ├── prompts.py    ← LLM에 보낼 프롬프트 조립 담당
-    └── tools.py      ← 날씨/스타일 추론, 검색 등 보조 함수 담당
+    ├── tools.py      ← 날씨/스타일 추론, 검색, 텍스트 정제 보조 함수 담당
+    └── ui.py         ← Streamlit 화면 렌더링 함수 담당
 
 ──────────────────────────────────────────────────────────────────────────────
 [__init__.py의 역할]
@@ -52,6 +53,7 @@ from core.prompts import build_weather_fit_prompt
 #   build_style_keywords        : 선택 스타일과 선호 색상을 추천 방향 키워드로 변환
 #   build_weather_keywords      : 날씨·기온·바람 조건을 추천에 쓸 키워드 문자열로 변환
 #   choose_auto_style           : 스타일이 "자동 추천"일 때 날씨·상황에 맞는 후보를 반환
+#   clean_text                  : AI 답변에서 HTML/CSS/코드 조각을 제거하고 순수 텍스트만 반환
 #   contains_any                : 문장 안에 특정 키워드 중 하나라도 있는지 확인 (True/False)
 #   get_weather_warning         : 오늘 조건에서 피하면 좋은 옷차림 힌트를 문자열로 반환
 #   infer_style_from_user_input : 사용자 문장에서 스타일 힌트를 찾아 사이드바보다 우선 적용
@@ -64,12 +66,31 @@ from core.tools import (
     build_style_keywords,
     build_weather_keywords,
     choose_auto_style,
+    clean_text,
     contains_any,
     get_weather_warning,
     infer_style_from_user_input,
     infer_weather_from_user_input,
     merge_user_weather_with_sidebar,
     search_duckduckgo,
+)
+
+# ──────────────────────────────────────────────────────────────────────────────
+# ui.py에서 Streamlit 화면 렌더링 함수 가져오기
+#
+# 각 함수가 하는 일:
+#   build_conversation_history  : 최근 대화 기록을 프롬프트에 넣기 좋은 문자열로 변환
+#   render_ai_message           : AI 답변을 아바타 카드와 함께 화면에 출력
+#   render_hero                 : 상단 히어로 영역(제목, 날씨 요약 카드)을 출력
+#   render_try_prompt           : 첫 화면에 예시 질문 안내 박스를 출력
+#   render_user_message         : 사용자 질문을 말풍선 형태로 화면에 출력
+# ──────────────────────────────────────────────────────────────────────────────
+from core.ui import (
+    build_conversation_history,
+    render_ai_message,
+    render_hero,
+    render_try_prompt,
+    render_user_message,
 )
 
 
@@ -87,15 +108,21 @@ from core.tools import (
 # 정리하면: __all__은 선택 사항이지만 있으면 코드의 의도가 명확해집니다.
 # ──────────────────────────────────────────────────────────────────────────────
 __all__ = [
-    "build_weather_fit_prompt",       # prompts.py
-    "build_context_summary",          # tools.py
-    "build_style_keywords",           # tools.py
-    "build_weather_keywords",         # tools.py
-    "choose_auto_style",              # tools.py
-    "contains_any",                   # tools.py
-    "get_weather_warning",            # tools.py
-    "infer_style_from_user_input",    # tools.py
-    "infer_weather_from_user_input",  # tools.py
-    "merge_user_weather_with_sidebar",# tools.py
-    "search_duckduckgo",              # tools.py
+    "build_weather_fit_prompt",        # prompts.py
+    "build_context_summary",           # tools.py
+    "build_style_keywords",            # tools.py
+    "build_weather_keywords",          # tools.py
+    "choose_auto_style",               # tools.py
+    "clean_text",                      # tools.py
+    "contains_any",                    # tools.py
+    "get_weather_warning",             # tools.py
+    "infer_style_from_user_input",     # tools.py
+    "infer_weather_from_user_input",   # tools.py
+    "merge_user_weather_with_sidebar", # tools.py
+    "search_duckduckgo",               # tools.py
+    "build_conversation_history",      # ui.py
+    "render_ai_message",               # ui.py
+    "render_hero",                     # ui.py
+    "render_try_prompt",               # ui.py
+    "render_user_message",             # ui.py
 ]

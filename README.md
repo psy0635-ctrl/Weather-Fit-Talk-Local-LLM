@@ -72,21 +72,26 @@ OpenAI / Gemini **API Key 없이** Ollama 로컬 모델만으로 실행됩니다
 ```
 Weather-Fit-Talk-Local-LLM/
 │
-├── app.py              # Streamlit 메인 실행 파일
-├── prompts.py          # LLM 프롬프트 레이어 정의
-├── tools.py            # 날씨·스타일 추론 및 DuckDuckGo 검색 기능
-├── style.css           # 웹 UI 디자인
-├── requirements.txt    # 필요한 Python 라이브러리 목록
-└── README.md           # 프로젝트 설명 문서
+├── app.py                # Streamlit 메인 실행 파일
+├── style.css             # 웹 UI 디자인
+├── requirements.txt      # Python 라이브러리 목록
+├── README.md             # 프로젝트 설명 문서
+│
+└── core/                 # 핵심 로직 패키지
+    ├── __init__.py       # 패키지 대문, 함수 공개 목록
+    ├── prompts.py        # LLM 프롬프트 레이어 정의
+    └── tools.py          # 날씨·스타일 추론 및 검색 기능
 ```
 
 ### 📄 파일 역할
 
 **`app.py`** — 웹 페이지 구성, 사이드바 옵션, 사용자 입력 처리, Ollama LLM 호출, CSS 로드
 
-**`prompts.py`** — 시스템 역할 정의, HTML/CSS 출력 금지 규칙, 사용자 입력 우선 규칙, 최종 답변 형식 지정
+**`core/__init__.py`** — core 패키지의 대문 역할, prompts.py·tools.py의 공개 함수를 한 곳에서 임포트 가능하게 모음
 
-**`tools.py`** — 날씨·스타일 추론, 자동 스타일 추천, 키워드 생성, DuckDuckGo 검색 실행 및 결과 요약
+**`core/prompts.py`** — 시스템 역할 정의, HTML/CSS 출력 금지 규칙, 사용자 입력 우선 규칙, 최종 답변 형식 지정
+
+**`core/tools.py`** — 날씨·스타일 추론, 자동 스타일 추천, 키워드 생성, DuckDuckGo 검색 실행 및 결과 요약
 
 **`style.css`** — 블랙 기반 에디토리얼 스타일, 아이보리 카드 UI, Streamlit 기본 UI 커스터마이징
 

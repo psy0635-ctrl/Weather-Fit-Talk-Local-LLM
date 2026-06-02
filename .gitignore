@@ -1,14 +1,31 @@
 # Python 가상환경 폴더입니다. 용량이 크고 개인 PC마다 달라서 Git에 올리지 않습니다.
 .venv/
+venv/
+env/
 
 # Python이 실행 속도를 위해 자동 생성하는 캐시 폴더입니다.
 __pycache__/
 
 # Python 캐시 파일입니다.
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+.Python
 
 # API 키나 개인 설정을 넣는 파일입니다. 실수로 공개 저장소에 올리면 안 됩니다.
 .env
+.env.local
+.env.*
 
+# Streamlit 캐시 및 설정 폴더입니다.
+.streamlit/
 
+# macOS 시스템 파일입니다.
+.DS_Store
 
+# Windows 썸네일 캐시 파일입니다.
+Thumbs.db
+
+# IDE 설정 폴더입니다.
+.vscode/
+.idea/
